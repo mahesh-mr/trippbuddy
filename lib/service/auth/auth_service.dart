@@ -1,10 +1,13 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:trippbuddy/service/Token/token.dart';
 import 'package:trippbuddy/service/dio/dio_clint.dart';
-import 'package:trippbuddy/view/Scereen_Home/tabview.dart';
 import 'package:trippbuddy/view/auth/login/log.dart';
 
 class Auth {
+  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<sign up>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
   static Future<String> signUpMethod(
       {required String email,
       required String password,
@@ -13,8 +16,7 @@ class Auth {
     print("11111111111111111111111111");
     try {
       print("222222222222222222222222");
-
-      var response = await DioClient.dio.post("/register", data: {
+      var response = await DioClient.dio.post("/signup", data: {
         "email": email,
         "password": password,
         "name": name,
@@ -23,57 +25,129 @@ class Auth {
       print("33333333333333333333333333333");
       print("Success");
       print(response.data);
-      Get.to(LogIn());
-
+      Map<String, String> user = {
+        "uId": response.data['user'],
+        "token": response.data["token"],
+      };
+      TokenStorage.saveToken(user);
+      print(response.data);
       return "success";
     } on DioError catch (e) {
-      print("Dio Error");
-
       print(e.error);
 
       print(e.response!.data);
 
       print(e.response!.statusMessage);
-
       if (e.type == DioErrorType.other) {
-        print("no internet");
         return "no internet connection";
       }
 
       if (e.response != null) {
         return e.response!.data['message'];
       }
+
+      Get.showSnackbar(
+        GetSnackBar(
+          duration: Duration(seconds: 3),
+          title: "Warning",
+          message: e.response == null
+              ? "something went wrong"
+              : e.response!.data['error'],
+        ),
+      );
       return 'something went wrong';
     } catch (e) {
-      print(e);
       return "";
     }
   }
 
-  static loginMethod(
+  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<sign up >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
+
+  static Future<String> loginMethod(
     String email,
     String password,
   ) async {
     try {
-      print("777777");
       final response = await DioClient.dio.post("/login", data: {
         "email": email,
         "password": password,
       });
-      print("Success");
+      print(response.data['user']['_id']);
+
+      // Map<String, String> user = {
+      //   "uId": response.data['user']["_id"],
+      //   "token": response.data["token"],
+      // };
+      // String? token = TokenStorage.getUserIdAndToken("token");
+      // print(token);
+      // print(user);
+      // TokenStorage.saveToken(user);
       print(response.data);
-      Get.snackbar("success", "login");
-      Get.offAll(TabView());
+      // Get.snackbar("success", "login");
+
       return "success";
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) {
-        print("no internet");
         return "No internet connection";
       }
 
+      Get.showSnackbar(
+        GetSnackBar(
+          duration: const Duration(seconds: 3),
+          title: "Warning",
+          message: e.response == null
+              ? "something went wrong"
+              : e.response!.data['error'],
+        ),
+      );
+
       return "something";
     } catch (e) {
-      print(e);
+      return "";
+    }
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< update password>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  }
+
+  static Future<String>UpdatePassword(
+    String oldPassword,
+    String newPassword,
+  )async {
+      String? token = TokenStorage.getUserIdAndToken("token");
+
+    try {
+      final response = await DioClient.dio.put("/updatepassword ", 
+      data:{
+         "oldPassword": oldPassword,
+      "newPassword":newPassword,
+
+      },
+        options: Options(
+          headers: {"Authorization": "Bearer $token"},
+        ),);
+    
+     print(token);
+    
+      print(response.data);
+    
+      return "success";
+   } on DioError catch (e) {
+      if (e.type == DioErrorType.other) {
+        return "No internet connection";
+      }
+
+      Get.showSnackbar(
+        GetSnackBar(
+          duration: const Duration(seconds: 3),
+          title: "Warning",
+          message: e.response == null
+              ? "something went wrong"
+              : e.response!.data['error'],
+        ),
+      );
+
+      return "something";
+    } catch (e) {
       return "";
     }
   }

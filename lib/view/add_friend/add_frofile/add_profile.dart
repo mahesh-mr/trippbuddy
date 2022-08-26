@@ -1,74 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:trippbuddy/controller/alluser/alluser.dart';
+import 'package:trippbuddy/controller/userprofile/userprofile.dart';
+import 'package:trippbuddy/service/userprofile/userprofile.dart';
 import 'package:trippbuddy/view/1_core/font/font.dart';
-import 'package:trippbuddy/view/widgets/login_button.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 class AddFriendProfile extends StatelessWidget {
-  const AddFriendProfile({Key? key}) : super(key: key);
+  AddFriendProfile({Key? key,required  this.profileImage,required this.name}) : super(key: key);
+  // int index;
+ String profileImage;
+ String name;
 
+ AllUsercontroll allUsercontroll = Get.put(AllUsercontroll());
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          children: [
-            Stack(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 250,
-                  child: Image.asset(
-                    "assets/pr1.jpg",
-                    fit: BoxFit.cover,
-                  ),
+ return   Obx(
+ 
+( ) {
+  if(allUsercontroll.isLoding.value){
+    Center(child: CircularProgressIndicator(),);
+  }
+  if (allUsercontroll.allUsers!.isEmpty) {
+    Text("data");
+    
+  }
+  // UserProfileServese.getUserpRofile(userProfileController.userProfile![index!].sId!);
+
+     return Container(
+          height: 150,
+          child: Row(
+            //crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10,top: 40),
+                child: CircleAvatar(
+                  backgroundImage:NetworkImage(profileImage),
+                  radius: 60,
                 ),
-              ],
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: Row(
+              ),
+             Padding(
+               padding: const EdgeInsets.only(top: 30,left: 10.0),
+               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment:  CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 120),
-                    child: TextLines(
-                        title: "Nakul",
-                        size: 20,
-                        fontfamly: logbtn,
-                        fw: FontWeight.w900),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: LogButton(
-                      onpressed: () {},
-                      text_or_icon:const Text("Connet"),
-                      size: const Size(50, 30),
-                      edgeInsets: const EdgeInsets.only(left: 10, right: 10),
-                    ),
-                  )
+                   TextLines(
+                    title: name,
+                    size: 20,
+                    fontfamly: logbtn,
+                    fw: FontWeight.w900),
+                TextLines(
+                    title: "",
+                    size: 20,
+                    fontfamly: logbtn,
+                    fw: FontWeight.w900),
                 ],
-              ),
-            ),
-          ],
-        ),
-        Positioned(
-          bottom: 0,
-          left: 10,
-          child: SizedBox(
-            width: 100,
-            height: 100,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10), // Image border
-              child: SizedBox.fromSize(
-                size: const Size.fromRadius(10), // Image radius
-                child: Image.asset("assets/pro2.jpg",
-                    fit: BoxFit.cover, colorBlendMode: BlendMode.lighten),
-              ),
-            ),
+               ),
+             )
+            ],
           ),
-        ),
-      ],
-    );
+        );
+   }
+ );
   }
 }

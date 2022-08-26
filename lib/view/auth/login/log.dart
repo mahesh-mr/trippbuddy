@@ -1,15 +1,9 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:trippbuddy/controller/logincontroller/login_controller.dart';
-
-import 'package:trippbuddy/model/profile_model/profile.dart';
 import 'package:trippbuddy/service/auth/auth_service.dart';
-import 'package:trippbuddy/service/dio/dio_clint.dart';
 import 'package:trippbuddy/view/1_core/color/colors.dart';
 import 'package:trippbuddy/view/1_core/font/font.dart';
-import 'package:trippbuddy/view/1_core/get_storage_box.dart';
 import 'package:trippbuddy/view/Scereen_Home/tabview.dart';
 import 'package:trippbuddy/view/auth/widgets/textform.dart';
 import 'package:trippbuddy/view/auth/sign_up/sign_up.dart';
@@ -18,7 +12,7 @@ import 'package:trippbuddy/view/widgets/text.dart';
 
 class LogIn extends StatelessWidget {
   LogIn({Key? key}) : super(key: key);
-  final _logcontroller = LogInController();
+  // final _logcontroller = LogInController();
 
   final _formkey = GlobalKey<FormState>();
 
@@ -27,6 +21,8 @@ class LogIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //  _emailController.text ="ee@gmail.com";
+    //  _passController.text = "123456";
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
@@ -66,19 +62,20 @@ class LogIn extends StatelessWidget {
                         edgeInsets: const EdgeInsets.all(0),
                         onpressed: () {
                           if (_formkey.currentState!.validate()) {
-                        
-                           Auth.loginMethod(
-                                _emailController.text,
-                                _passController.text,
-                              
-                              );
-                              //  Get.offAll(TabView());
-                              //    print(response);
-                       
+                            Auth.loginMethod(
+                              _emailController.text,
+                              _passController.text,
+                            ).then((value) {
+                              if (value == "success") {
+                                Get.offAll(TabView());
+                              }
+                            });
+
+                         
+
                           }
 
-                       box.write('key', _emailController.text);
-                         
+                      
                         },
                         text_or_icon: TextLines(
                             title: "Log In",
@@ -89,23 +86,21 @@ class LogIn extends StatelessWidget {
                         height: height * .02,
                       ),
                       RichText(
-        text: TextSpan(
-            text: 'Don\'t have an account?',
-            style: const TextStyle(
-                color: Colors.black, fontSize: 18),
-            children: <TextSpan>[
-              TextSpan(text: ' Sign up',
-                  style: TextStyle(
-                      color:blue2, fontSize: 18),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      Get.to(SignUp());
-                      // navigate to desired screen
-                    }
-              )
-            ]
-        ),
-      ),
+                        text: TextSpan(
+                            text: 'Don\'t have an account?',
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 18),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: ' Sign up',
+                                  style: TextStyle(color: blue2, fontSize: 18),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Get.to(SignUp());
+                                      // navigate to desired screen
+                                    })
+                            ]),
+                      ),
                     ],
                   ),
                 ),
@@ -133,7 +128,7 @@ class LogIn extends StatelessWidget {
   }
 
   TextForm nameFeild() {
-    return  TextForm(
+    return TextForm(
         type: TextInputType.emailAddress,
         validator: (value) {
           if (value == null) {

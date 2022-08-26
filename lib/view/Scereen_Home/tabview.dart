@@ -2,22 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trippbuddy/view/1_core/color/colors.dart';
 import 'package:trippbuddy/view/1_core/font/font.dart';
+import 'package:trippbuddy/view/Markets/markets.dart';
 import 'package:trippbuddy/view/chat/chat.dart';
 import 'package:trippbuddy/view/home/fied.dart';
 import 'package:trippbuddy/view/profile/profile.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 class TabView extends StatelessWidget {
-  const TabView({Key? key}) : super(key: key);
+  const TabView({Key? key,}) : super(key: key);
+ 
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-   // final height = size.height;
+    // final height = size.height;
     final width = size.width;
-    return Scaffold(
-      body: DefaultTabController(
-        length: 3,
+    return  DefaultTabController(
+        length: 4,
         child: Scaffold(
           backgroundColor: white1,
           appBar: AppBar(
@@ -26,7 +27,8 @@ class TabView extends StatelessWidget {
               title: "Tripbuddy",
               size: width * .09,
               fontfamly: head,
-              fw: FontWeight.bold,color: black1,
+              fw: FontWeight.bold,
+              color: black1,
             ),
             elevation: 0,
             backgroundColor: white1,
@@ -45,6 +47,9 @@ class TabView extends StatelessWidget {
                   ),
                 ),
                 Tab(
+                  icon: Icon(CupertinoIcons.shopping_cart),
+                ),
+                Tab(
                   icon: Icon(CupertinoIcons.person_crop_circle),
                 ),
               ],
@@ -52,13 +57,14 @@ class TabView extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              const NewFeid(),
+               NewFeid(),
               ChatScreen(),
-              const Profile(),
+              Markets(),
+              Profile(),
             ],
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }

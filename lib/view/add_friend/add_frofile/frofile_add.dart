@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:trippbuddy/controller/alluser/alluser.dart';
+import 'package:trippbuddy/controller/userprofile/userprofile.dart';
+import 'package:trippbuddy/model/allbuddys/allbuddys.dart';
+import 'package:trippbuddy/model/userpost/userpost.dart';
 import 'package:trippbuddy/view/1_core/color/colors.dart';
 import 'package:trippbuddy/view/add_friend/add_friend_post/add_friend_post.dart';
 import 'package:trippbuddy/view/add_friend/add_frofile/add_profile.dart';
 
+
 import 'package:trippbuddy/view/widgets/follow/follow.dart';
 
 class FriendProfile extends StatelessWidget {
-  const FriendProfile({ Key? key }) : super(key: key);
+   FriendProfile({ Key? key ,required this.userDetails,}) : super(key: key);
+  
+
+
+   AllUsercontroll allUsercontroll =Get.put(AllUsercontroll());
+   UserPostcontroll userpostcontroller = Get.put(UserPostcontroll());
+
+
+Users userDetails;
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +32,8 @@ class FriendProfile extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (context, index) {
             return [
-              const SliverToBoxAdapter(
-                child: AddFriendProfile(),
+               SliverToBoxAdapter(
+                child:  AddFriendProfile(profileImage: userDetails.pic!,name: userDetails.name!,),
               ),
               SliverAppBar(
                 elevation: 0,
@@ -31,14 +46,15 @@ class FriendProfile extends StatelessWidget {
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.black,
                 
-                  tabs:const [
+                  tabs: [
                      Tab(
-                      text: "Post",
+                      text:
+                   "  userpostcontroller.userPosts![postIndex].photo!.length.toString()",
                     ),
                      Tab(
-                      text: "Followers",
+                      text:"${userDetails.followers!.length.toString()} Followers " ,
                     ),
-                     Tab(text: "Following"),
+                     Tab(text:"${userDetails.following!.length.toString()} Following"),
                   ],
                 ),
               ),

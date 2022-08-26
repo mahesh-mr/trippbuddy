@@ -1,75 +1,54 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:trippbuddy/controller/myprofile/myprofile.dart';
 import 'package:trippbuddy/view/1_core/color/colors.dart';
 import 'package:trippbuddy/view/1_core/font/font.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 class CoverPic extends StatelessWidget {
-  const CoverPic({Key? key}) : super(key: key);
+   CoverPic({Key? key}) : super(key: key);
+  MyProfileController myrofileciontroller = Get.put(MyProfileController());
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          children: [
-            Stack(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 250,
-                  child: Image.asset(
-                    "assets/pr1.jpg",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Positioned(
-                    right: 10,
-                    top: 20,
-                    child: IconButton(
-                        onPressed: () {},
-                        // ignore: prefer_const_constructors
-                        icon: Icon(
-                          Icons.add_photo_alternate,
-                          color: white1,
-                        )))
-              ],
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
+    return Builder(
+      builder: (context) {
+        return Container(
+              height: 150,
               child: Row(
+                //crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 120),
-                    child: TextLines(
+                    padding: const EdgeInsets.only(left: 10,top: 40),
+                    child: CircleAvatar(
+                    //  backgroundImage:NetworkImage(allUsercontroll.allUsers![index].pic!),
+                      radius: 60,
+                    ),
+                  ),
+                 Padding(
+                   padding: const EdgeInsets.only(top: 30,left: 10.0),
+                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment:  CrossAxisAlignment.start,
+                    children: [
+                       TextLines(
                         title: "Nakul",
                         size: 20,
                         fontfamly: logbtn,
                         fw: FontWeight.w900),
-                  ),
+                    TextLines(
+                        title: "Nakul",
+                        size: 20,
+                        fontfamly: logbtn,
+                        fw: FontWeight.w900),
+                    ],
+                   ),
+                 )
                 ],
               ),
-            )
-          ],
-        ),
-        Positioned(
-          bottom: 0,
-          left: 10,
-          child: SizedBox(
-            width: 100,
-            height: 100,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10), // Image border
-              child: SizedBox.fromSize(
-                size: const Size.fromRadius(10), // Image radius
-                child: Image.asset("assets/pro2.jpg",
-                    fit: BoxFit.cover, colorBlendMode: BlendMode.lighten),
-              ),
-            ),
-          ),
-        ),
-      ],
+            );
+      }
     );
   }
 }

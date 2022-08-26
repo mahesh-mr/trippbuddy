@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:trippbuddy/controller/mypost/mypost.dart';
+import 'package:trippbuddy/controller/myprofile/myprofile.dart';
 import 'package:trippbuddy/view/1_core/color/colors.dart';
 import 'package:trippbuddy/view/profile/build_porfile/main_profile.dart';
 import 'package:trippbuddy/view/profile/post/post.dart';
 import 'package:trippbuddy/view/widgets/follow/follow.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
+   Profile({Key? key,}) : super(key: key);
+  // int proIndex;
+   MyPostController myPostController = Get.put(MyPostController());
+   MyProfileController myrofileciontroller = Get.put(MyProfileController());
+  
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +20,15 @@ class Profile extends StatelessWidget {
       body: DefaultTabController(
         length: 3,
         child: NestedScrollView(
-          headerSliverBuilder: (context, index) {
+          headerSliverBuilder: (context, index, ) {
             return [
-              const SliverToBoxAdapter(
-                child: CoverPic(),
+               SliverToBoxAdapter(
+                child:
+                
+                
+                
+                
+                CoverPic(),
               ),
               SliverAppBar(
                 elevation: 0,
@@ -29,14 +41,14 @@ class Profile extends StatelessWidget {
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.black,
                 
-                  tabs:const [
+                  tabs: [
                      Tab(
-                      text: "10  Post",
+                      text: "${myPostController.allMyPosts.length} Posts",
                     ),
-                     Tab(
-                      text: "22  Followers",
+                      Tab(
+                      text: "fdf",
                     ),
-                     Tab(text: "18  Following"),
+                     const Tab(text: "18  Following"),
                   ],
                 ),
               ),

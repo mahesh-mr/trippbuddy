@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:trippbuddy/view/Scereen_Home/tabview.dart';
-import 'package:trippbuddy/view/add_friend/add_frofile/frofile_add.dart';
-import 'package:trippbuddy/view/auth/login/log.dart';
-import 'package:trippbuddy/view/auth/sign_up/sign_up.dart';
-
+import 'package:trippbuddy/service/Token/token.dart';
+import 'package:trippbuddy/view/Scereen_Home/tabview.dart'; 
 import 'package:trippbuddy/view/onbording/onbording.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -19,11 +16,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String?token=TokenStorage.getUserIdAndToken("token");
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       // theme: ThemeData.dark(),
-      home: LogIn(),
+      home:
+      token ==null? Onbording():TabView(),
     );
   }
 }

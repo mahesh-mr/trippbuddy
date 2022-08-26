@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:trippbuddy/controller/login_controller/logincontroller.dart';
-import 'package:trippbuddy/model/profile_model/profile.dart';
 import 'package:trippbuddy/service/auth/auth_service.dart';
 import 'package:trippbuddy/view/1_core/color/colors.dart';
 import 'package:trippbuddy/view/1_core/font/font.dart';
@@ -18,17 +16,14 @@ import 'package:trippbuddy/view/widgets/text.dart';
 class SignUp extends StatelessWidget {
   SignUp({Key? key}) : super(key: key);
 
-  final ImagePicker imagePicker = ImagePicker();
+  //final ImagePicker imagePicker = ImagePicker();
 
   final _formkey = GlobalKey<FormState>();
-
   final _nameController = TextEditingController();
-
   final _emailController = TextEditingController();
-
   final _passController = TextEditingController();
-
   final _cpassController = TextEditingController();
+
 
   SignUpController loginController = Get.put(SignUpController());
 
@@ -72,40 +67,39 @@ class SignUp extends StatelessWidget {
                           SizedBox(
                             height: height * .02,
                           ),
-
                           passwerdFelid(),
-
-                          //   imageColum(width),
-
-                          SizedBox(
+  SizedBox(
                             height: height * .02,
                           ),
-
                           LogButton(
-                            onpressed: () { showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text(
-                      'Select Choice',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    actions: [
-                      IconButton(
-                          onPressed: () {
-                            controller.picImage(ImageSource.camera);
-                          },
-                          icon: const Icon(Icons.camera)),
-                      const Spacer(),
-                      IconButton(
-                          onPressed: () {
-                            controller.picImage(ImageSource.gallery);
-                          },
-                          icon: const Icon(Icons.photo)),
-                    ],
-                  );
-                },
-              );},
+                            onpressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      'Select Choice',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    actions: [
+                                      IconButton(
+                                          onPressed: () {
+                                            controller
+                                                .picImage(ImageSource.camera);
+                                          },
+                                          icon: const Icon(Icons.camera)),
+                                      const Spacer(),
+                                      IconButton(
+                                          onPressed: () {
+                                            controller
+                                                .picImage(ImageSource.gallery);
+                                          },
+                                          icon: const Icon(Icons.photo)),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
                             text_or_icon: TextLines(
                                 title: "Select Image",
                                 size: width * .06,
@@ -141,8 +135,20 @@ class SignUp extends StatelessWidget {
                                             CloudinaryResourceType.Image),
                                   );
 
-                                 await Auth.signUpMethod(email: _emailController.text,password:  _passController.text,name: _nameController.text, avatar:  response.secureUrl);
-                            //    Get.offAll(LogIn());
+                                  await Auth.signUpMethod(
+                                      email: _emailController.text,
+                                      password: _passController.text,
+                                      name: _nameController.text,
+                                      avatar: response.secureUrl)  ;
+                                print(response);
+                                Get.offAll(LogIn());
+                             
+                          
+
+                                      
+                                      
+  
+                                  //    
                                   print(response);
                                   //  Get.offAll(TabView());
 
@@ -179,18 +185,15 @@ class SignUp extends StatelessWidget {
     return Column(
       children: [
         controller.imagePath != null
-            ?  CircleAvatar(
+            ? CircleAvatar(
                 radius: 55,
-                backgroundImage:FileImage(  File(
-                          controller.imagePath.toString(),
-                        ),) ,
-               
-              ):
-            
-            
-            
-           
-            const CircleAvatar(
+                backgroundImage: FileImage(
+                  File(
+                    controller.imagePath.toString(),
+                  ),
+                ),
+              )
+            : const CircleAvatar(
                 radius: 55,
                 backgroundColor: gray2,
                 child: CircleAvatar(
@@ -203,7 +206,6 @@ class SignUp extends StatelessWidget {
                   ),
                 ),
               ),
-
         SizedBox(
           height: height * .02,
         ),
