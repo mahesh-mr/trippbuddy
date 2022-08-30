@@ -12,7 +12,7 @@ class Auth {
       {required String email,
       required String password,
       required String name,
-      required String avatar}) async {
+      required String pic}) async {
     print("11111111111111111111111111");
     try {
       print("222222222222222222222222");
@@ -20,7 +20,7 @@ class Auth {
         "email": email,
         "password": password,
         "name": name,
-        "avatar": avatar,
+        "pic": pic,
       });
       print("33333333333333333333333333333");
       print("Success");
@@ -74,14 +74,14 @@ class Auth {
       });
       print(response.data['user']['_id']);
 
-      // Map<String, String> user = {
-      //   "uId": response.data['user']["_id"],
-      //   "token": response.data["token"],
-      // };
-      // String? token = TokenStorage.getUserIdAndToken("token");
-      // print(token);
-      // print(user);
-      // TokenStorage.saveToken(user);
+      Map<String, String> user = {
+        "uId": response.data['user']["_id"],
+        "token": response.data["token"],
+      };
+      String? token = TokenStorage.getUserIdAndToken("token");
+      print(token);
+      print(user);
+      TokenStorage.saveToken(user);
       print(response.data);
       // Get.snackbar("success", "login");
 
@@ -112,16 +112,21 @@ class Auth {
   static Future<String>UpdatePassword(
     String oldPassword,
     String newPassword,
+    String userId
   )async {
-      String? token = TokenStorage.getUserIdAndToken("token");
+    //  String? userId = TokenStorage.getUserIdAndToken("uId");
+       String? token = TokenStorage.getUserIdAndToken("token");
 
     try {
       final response = await DioClient.dio.put("/updatepassword ", 
       data:{
-         "oldPassword": oldPassword,
+      "oldPassword": oldPassword,
       "newPassword":newPassword,
+      "userId":userId,
+
 
       },
+      
         options: Options(
           headers: {"Authorization": "Bearer $token"},
         ),);
@@ -135,14 +140,17 @@ class Auth {
       if (e.type == DioErrorType.other) {
         return "No internet connection";
       }
-
+      print("passssssssssssssssssssssssssss nottttttttttttt");
+print(e.message);
+print(e.response);
+print(e.response!.data);
       Get.showSnackbar(
         GetSnackBar(
           duration: const Duration(seconds: 3),
           title: "Warning",
           message: e.response == null
               ? "something went wrong"
-              : e.response!.data['error'],
+              : e.response!.data,
         ),
       );
 

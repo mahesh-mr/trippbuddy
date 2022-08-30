@@ -13,17 +13,16 @@ import 'package:trippbuddy/view/auth/widgets/textform.dart';
 import 'package:trippbuddy/view/widgets/login_button.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
+// ignore: must_be_immutable
 class SignUp extends StatelessWidget {
   SignUp({Key? key}) : super(key: key);
 
-  //final ImagePicker imagePicker = ImagePicker();
 
   final _formkey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   final _cpassController = TextEditingController();
-
 
   SignUpController loginController = Get.put(SignUpController());
 
@@ -68,7 +67,7 @@ class SignUp extends StatelessWidget {
                             height: height * .02,
                           ),
                           passwerdFelid(),
-  SizedBox(
+                          SizedBox(
                             height: height * .02,
                           ),
                           LogButton(
@@ -139,19 +138,10 @@ class SignUp extends StatelessWidget {
                                       email: _emailController.text,
                                       password: _passController.text,
                                       name: _nameController.text,
-                                      avatar: response.secureUrl)  ;
-                                print(response);
-                                Get.offAll(LogIn());
-                             
-                          
-
-                                      
-                                      
-  
-                                  //    
+                                      pic: response.secureUrl);
                                   print(response);
-                                  //  Get.offAll(TabView());
-
+                                  Get.offAll(LogIn());
+                                  print(response);
                                 } catch (e) {
                                   print(e);
                                 }
@@ -221,13 +211,12 @@ class SignUp extends StatelessWidget {
     );
   }
 
-  //==========================================================================================================
-
+  //<<<<<<<<<<<<<<<<<<<<<<<iMAGE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   SignUpController picImage(SignUpController controller) => controller;
 
   Padding alreyAccount(double width, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 55),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: RichText(
         text: TextSpan(
             text: 'Alredy have an account?',
@@ -254,10 +243,10 @@ class SignUp extends StatelessWidget {
           RegExp regex = RegExp(
               r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
           if (value!.isEmpty) {
-            return 'Please enter passwords';
+            return 'Please enter password';
           } else {
             if (!regex.hasMatch(value)) {
-              return 'Enter valid passwords';
+              return 'Enter valid password';
             } else if (value != _passController.text) {
               return 'Not Match';
             } else {
@@ -266,7 +255,7 @@ class SignUp extends StatelessWidget {
           }
         },
         controller: _cpassController,
-        title: "Confirm passwords");
+        title: "Confirm password");
   }
 
 //===========================================================================================================
@@ -277,13 +266,13 @@ class SignUp extends StatelessWidget {
           RegExp regex = RegExp(
               r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
           if (value!.isEmpty) {
-            return 'Please enter passwords';
+            return 'Please enter password';
           }
 
           return null;
         },
         controller: _passController,
-        title: "passwords");
+        title: "password");
   }
 
   //===========================================================================================================

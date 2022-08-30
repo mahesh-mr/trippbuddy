@@ -1,16 +1,18 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:get/get.dart';
 import 'package:trippbuddy/model/profile/profile.dart';
-import 'package:trippbuddy/service/myprofile/myprofile.dart';
+import 'package:trippbuddy/service/pofile/profile.dart';
 
 class MyProfileController extends GetxController{
-  List <UserData>? userdetails;
+  UserProfile? userProfile;
   RxBool loding = true .obs;
-  Future <List<UserData>?>getMyProfiles()async{
+  Future <UserProfile?> getMyProfiles()async{
    try {
-    var data =await ProfileService.getMyProfile();
+    var data =await ProfileService.getMyProfileService();
     loding.value =false;
     print(data);
-    return data!;
+    return data ;
      
    } catch (e) {
       Get.snackbar('oopz', ' $e');
@@ -26,8 +28,9 @@ class MyProfileController extends GetxController{
   }
   @override
   void onInit() {
-    getMyProfiles().then((value) => userdetails=value);
-    // TODO: implement onInit
+    print("init state called");
+  getMyProfiles().then((value) => userProfile = value);
+   
     super.onInit();
   }
 }

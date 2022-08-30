@@ -27,6 +27,7 @@ class MyPostController extends GetxController{
   }
   @override
   void onInit() {
+    print("init state called");
    getallMyPosts().then((value) =>allMyPosts= value );
     super.onInit();
   }

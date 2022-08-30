@@ -16,25 +16,27 @@ class Cmt extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
-    final posts = postController.allPosts![index];
+    final posts = postController.allPosts.value[index];
     return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           backgroundColor:white1,
+          leading:IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(
+              CupertinoIcons.arrow_left,
+              color: black1,
+            ),
+          ) ,
           title: TextLines(
             title: "Comments",
             size: 18,color: black1,
             fw: FontWeight.bold,
           ),
           centerTitle: true,
-          actions: [ IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: const Icon(
-              CupertinoIcons.arrow_right,
-              color: black1,
-            ),
-          )],
+         
         ),
         body: Column(
          
@@ -70,9 +72,10 @@ class Cmt extends StatelessWidget {
               child: CommentsList(
                 postIndex: index,
               ),
-            )
+            ),
           ],
-        ));
+        ),
+        );
   }
 }
 
@@ -85,9 +88,9 @@ class CommentsList extends StatelessWidget {
     PostController postController = Get.put(PostController());
 
     return ListView.builder(
-      itemCount: postController.allPosts![postIndex].comments!.length,
+      itemCount: postController.allPosts.value[postIndex].comments!.length,
       itemBuilder: (context, index) {
-        final posts = postController.allPosts![postIndex].comments![index];
+        final posts = postController.allPosts.value[postIndex].comments![index];
         return ListTile(
           leading: CircleAvatar(
             backgroundImage: NetworkImage(posts.postedBy!.pic ??

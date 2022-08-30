@@ -9,10 +9,12 @@ import 'package:trippbuddy/view/widgets/login_button.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 class UpdatedPassword extends StatelessWidget {
-  UpdatedPassword({Key? key}) : super(key: key);
+  UpdatedPassword({Key? key,this.uid}) : super(key: key);
   // final _logcontroller = LogInController();
+String? uid;
 
   final _formkey = GlobalKey<FormState>();
+
 
  final _oldpassController = TextEditingController();
   final _newpassController = TextEditingController();
@@ -20,8 +22,7 @@ class UpdatedPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //  _emailController.text ="ee@gmail.com";
-    //  _passController.text = "123456";
+   
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
@@ -61,19 +62,20 @@ class UpdatedPassword extends StatelessWidget {
                         size: Size(double.infinity, height * .06),
                         edgeInsets: const EdgeInsets.all(0),
                         onpressed: () {
-                          if (_formkey.currentState!.validate()) {
-                            Auth.UpdatePassword(
-                              _oldpassController.text,
-                              _newpassController.text,
-                            ).then((value) {
-                              if (value == "success") {
-                                Get.offAll(Profile());
-                              }
-                            });
+                          // if (_formkey.currentState!.validate()) {
+                          //   Auth.UpdatePassword(   _oldpassController.text, _newpassController.text,uid )
+                            
+                         
+                            
+                          //   .then((value) {
+                          //     if (value == "success") {
+                          //       Get.offAll(Profile());
+                          //     }
+                          //   });
 
                          
 
-                          }
+                          //  }
 
                       
                         },

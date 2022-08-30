@@ -11,7 +11,7 @@ class OnbordingController extends GetxController {
    bool get isLastPage => selectedIndex.value==onbordingList.length-1;
   var pagecontroller = PageController();
  
-
+ 
 
 
   forwerdAction(){
@@ -20,7 +20,7 @@ class OnbordingController extends GetxController {
      Get.offAll(LogIn());
       
     } else {
-      pagecontroller.nextPage(duration: 300.milliseconds, curve: Curves.ease);
+      pagecontroller.nextPage(duration: 50.milliseconds, curve: Curves.ease);
     }
    
       
@@ -35,19 +35,19 @@ class OnbordingController extends GetxController {
       assetImage: "assets/onb3.jpg",
       title: "Make your trip",
       discriptions:
-          "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use",
+          "Travel leaves you speechless then turn you into a storyteller",
     ),
     OnbordingModel(
       assetImage: "assets/onb4.jpg",
-      title: "Make your trip",
+      title: "Add More Buddys",
       discriptions:
-          "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use",
+          "The world is a book and theos who do no travel read only a page",
     ),
     OnbordingModel(
       assetImage: "assets/onb5.jpg",
-      title: "Make your trip",
+      title: "Discover the World",
       discriptions:
-          "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use",
+          "The journy of a thosend miles begins with a single step ",
     ),
   ];
 }

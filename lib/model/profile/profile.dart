@@ -1,130 +1,93 @@
-class ProfieDetails {
-  List<UserData>? userData;
+// To parse this JSON data, do
+//
+//     final userProfile = userProfileFromJson(jsonString);
 
-  ProfieDetails({this.userData});
+import 'dart:convert';
 
-  ProfieDetails.fromJson(Map<String, dynamic> json) {
-    if (json['userData'] != null) {
-      userData =<UserData>[];
-      json['userData'].forEach((v){
-        userData!.add(new UserData.fromJson(v));
-      });
-      
-    }
-  }
-  //   userData = json['userData'] != null
-  //       ? new UserData.fromJson(json['userData'])
-  //       : null;
-  // }
+UserProfile userProfileFromJson(String str) => UserProfile.fromJson(json.decode(str));
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.userData != null) {
-      data['userData'] = this.userData!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+String userProfileToJson(UserProfile data) => json.encode(data.toJson());
+
+class UserProfile {
+    UserProfile({
+        this.userData,
+    });
+
+    UserData? userData;
+
+    factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
+        userData: UserData.fromJson(json["userData"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "userData": userData!.toJson(),
+    };
 }
 
 class UserData {
-  String? sId;
-  String? name;
-  String? email;
-  String? pic;
-  bool? isBlocked;
-  List<Followers>? followers;
-  List<Following>? following;
-  int? iV;
+    UserData({
+        this.id,
+        this.name,
+        this.email,
+        this.pic,
+        this.isBlocked,
+        this.followers,
+        this.following,
+        this.v,
+    });
 
-  UserData(
-      {this.sId,
-      this.name,
-      this.email,
-      this.pic,
-      this.isBlocked,
-      this.followers,
-      this.following,
-      this.iV});
+    String? id;
+    String? name;
+    String ?email;
+    String ?pic;
+    bool ?isBlocked;
+    List<Follow>? followers;
+    List<Follow> ?following;
+    int? v;
 
-  UserData.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    email = json['email'];
-    pic = json['pic'];
-    isBlocked = json['isBlocked'];
-    if (json['followers'] != null) {
-      followers = <Followers>[];
-      json['followers'].forEach((v) {
-        followers!.add(new Followers.fromJson(v));
-      });
-    }
-    if (json['following'] != null) {
-      following = <Following>[];
-      json['following'].forEach((v) {
-        following!.add(new Following.fromJson(v));
-      });
-    }
-    iV = json['__v'];
-  }
+    factory UserData.fromJson(Map<String, dynamic> json) => UserData(
+        id: json["_id"],
+        name: json["name"],
+        email: json["email"],
+        pic: json["pic"],
+        isBlocked: json["isBlocked"],
+        followers: List<Follow>.from(json["followers"].map((x) => Follow.fromJson(x))),
+        following: List<Follow>.from(json["following"].map((x) => Follow.fromJson(x))),
+        v: json["__v"],
+    );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['pic'] = this.pic;
-    data['isBlocked'] = this.isBlocked;
-    if (this.followers != null) {
-      data['followers'] = this.followers!.map((v) => v.toJson()).toList();
-    }
-    if (this.following != null) {
-      data['following'] = this.following!.map((v) => v.toJson()).toList();
-    }
-    data['__v'] = this.iV;
-    return data;
-  }
+    Map<String, dynamic> toJson() => {
+        "_id": id,
+        "name": name,
+        "email": email,
+        "pic": pic,
+        "isBlocked": isBlocked,
+        "followers": List<dynamic>.from(followers!.map((x) => x.toJson())),
+        "following": List<dynamic>.from(following!.map((x) => x.toJson())),
+        "__v": v,
+    };
 }
 
-class Following {
-  String? sId;
-  String? name;
-  String? pic;
+class Follow {
+    Follow({
+        this.id,
+        this.name,
+        this.pic,
+    });
 
-  Following({this.sId, this.name, this.pic});
+    String ?id;
+    String ?name;
+    String ?pic;
 
-  Following.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    pic = json['pic'];
-  }
+    factory Follow.fromJson(Map<String, dynamic> json) => Follow(
+        id: json["_id"],
+        name: json["name"],
+        pic: json["pic"],
+    );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['pic'] = this.pic;
-    return data;
-  }
-}
-
-class Followers {
-  String? sId;
-  String? name;
-  String? pic;
-
-  Followers({this.sId, this.name, this.pic});
-
-  Followers.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    pic = json['pic'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['pic'] = this.pic;
-    return data;
-  }
+    Map<String, dynamic> toJson() => {
+        "_id": id,
+        "name": name,
+        "pic": pic,
+    };
 }
