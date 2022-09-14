@@ -73,7 +73,7 @@ class ChatScreen extends StatelessWidget {
                 String userName = listChat.users[0].id != userId
                     ? listChat.users[0].name
                     : listChat.users[1].name;
-                String x = "2022-05-12T15:55:03.000000Z";
+              
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 5),
