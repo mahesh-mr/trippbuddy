@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:trippbuddy/view/1_core/color/colors.dart';
+import 'package:trippbuddy/view/core/color/colors.dart';
 
 class LogButton extends StatelessWidget {
   const LogButton(

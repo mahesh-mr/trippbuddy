@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:trippbuddy/view/1_core/font/font.dart';
+import 'package:trippbuddy/view/core/font/font.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 class Buddys extends StatelessWidget {

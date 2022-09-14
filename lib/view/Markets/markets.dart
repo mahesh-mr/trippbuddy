@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:trippbuddy/controller/productControll/productcontroll.dart';
-import 'package:trippbuddy/model/allproduct/all_product.dart';
-import 'package:trippbuddy/view/1_core/color/colors.dart';
-import 'package:trippbuddy/view/1_core/font/font.dart';
+import 'package:trippbuddy/controller/controller/productcontroll.dart';
+import 'package:trippbuddy/model/all_product.dart';
+import 'package:trippbuddy/view/core/color/colors.dart';
+import 'package:trippbuddy/view/core/font/font.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 class Markets extends StatelessWidget {

@@ -1,9 +1,9 @@
 // ignore_for_file: unrelated_type_equality_checks
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:trippbuddy/controller/onbording_controller/onbording.dart';
-import 'package:trippbuddy/view/1_core/color/colors.dart';
-import 'package:trippbuddy/view/1_core/font/font.dart';
+import 'package:trippbuddy/controller/controller/onbording_controller.dart';
+import 'package:trippbuddy/view/core/color/colors.dart';
+import 'package:trippbuddy/view/core/font/font.dart';
 import 'package:trippbuddy/view/widgets/login_button.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 

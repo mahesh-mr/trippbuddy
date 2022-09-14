@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cloudinary_public: ^0.11.1
+  comment_box: ^0.0.17
   coupon_uikit: ^0.0.1
   cupertino_icons: ^1.0.2
   dio: ^4.0.6
@@ -72,6 +73,7 @@ flutter:
     - assets/pro2.jpg
     - assets/onb4.jpg
     - assets/lo1.jpg
+    - assets/imageplace.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

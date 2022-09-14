@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trippbuddy/view/1_core/color/colors.dart';
+import 'package:trippbuddy/view/core/color/colors.dart';
 
 class TextForm extends StatelessWidget {
   final TextEditingController controller;
@@ -25,6 +25,7 @@ class TextForm extends StatelessWidget {
       keyboardType: type,
       validator: validator,
       decoration: InputDecoration(
+        
         fillColor: white1,
         filled: true,
         label: Text(title),

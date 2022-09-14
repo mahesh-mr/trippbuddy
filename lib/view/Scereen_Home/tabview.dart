@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trippbuddy/view/1_core/color/colors.dart';
-import 'package:trippbuddy/view/1_core/font/font.dart';
+import 'package:trippbuddy/view/buddys/alluser.dart';
+import 'package:trippbuddy/view/core/color/colors.dart';
+import 'package:trippbuddy/view/core/font/font.dart';
 import 'package:trippbuddy/view/Markets/markets.dart';
 import 'package:trippbuddy/view/chat/chat.dart';
 import 'package:trippbuddy/view/home/fied.dart';
@@ -18,7 +19,7 @@ class TabView extends StatelessWidget {
     // final height = size.height;
     final width = size.width;
     return  DefaultTabController(
-        length: 4,
+        length: 5,
         child: Scaffold(
           backgroundColor: white1,
           appBar: AppBar(
@@ -47,6 +48,9 @@ class TabView extends StatelessWidget {
                   ),
                 ),
                 Tab(
+                  icon: Icon(CupertinoIcons.person_2_fill),
+                ),
+                Tab(
                   icon: Icon(CupertinoIcons.shopping_cart),
                 ),
                 Tab(
@@ -59,6 +63,7 @@ class TabView extends StatelessWidget {
             children: [
                NewFeid(),
               ChatScreen(),
+              FrendsList(),
               Markets(),
               Profile(),
             ],

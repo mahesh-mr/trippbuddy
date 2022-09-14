@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:trippbuddy/service/Token/token.dart';
+import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/view/Scereen_Home/tabview.dart'; 
 import 'package:trippbuddy/view/onbording/onbording.dart';
 import 'package:get_storage/get_storage.dart';

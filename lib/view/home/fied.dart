@@ -1,34 +1,28 @@
-// ignore_for_file: prefer_const_constructors
+  // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
-import 'package:trippbuddy/controller/alluser/alluser.dart';
-import 'package:trippbuddy/controller/like/like.dart';
-import 'package:trippbuddy/controller/myprofile/myprofile.dart';
-import 'package:trippbuddy/controller/post_controller/post_controller.dart';
-import 'package:trippbuddy/model/like/like.dart';
-import 'package:trippbuddy/model/post_model/post_model.dart';
-import 'package:trippbuddy/service/Token/token.dart';
-import 'package:trippbuddy/service/auth/auth_service.dart';
-import 'package:trippbuddy/service/pofile/profile.dart';
-import 'package:trippbuddy/view/1_core/color/colors.dart';
+import 'package:trippbuddy/controller/controller/allpost_controller.dart';
+import 'package:trippbuddy/model/post_model.dart';
+import 'package:trippbuddy/controller/service/Token/token.dart';
+import 'package:trippbuddy/view/core/color/colors.dart';
+import 'package:trippbuddy/view/createpost/createpost.dart';
 import 'package:trippbuddy/view/home/comt/cmt.dart';
-import 'package:trippbuddy/view/updatepassword/updatepassword.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
-import '../createpost/createpost.dart';
 
 // ignore: must_be_immutable
-class NewFeid extends StatelessWidget {
+class NewFeid extends StatelessWidget {  
   NewFeid({Key? key}) : super(key: key);
   PostController postController = Get.put(PostController());
-  AllUsercontroll allUsercontroller = Get.put(AllUsercontroll());
-  MyProfileController myrofileciontroller = Get.put(MyProfileController());
-  LikeController likecontroller = Get.put(LikeController());
+ ////  UserPostcontroll  userpostcontroller = Get.put(UserPostcontroll());
+ // AllUsercontroll allUsercontroller = Get.put(AllUsercontroll());
+ // MyProfileController myrofileciontroller = Get.put(MyProfileController());
+ // LikeController likecontroller = Get.put(LikeController());
 
   String? userId = TokenStorage.getUserIdAndToken("uId");
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +33,8 @@ class NewFeid extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+        
+
           //   ProfileService.getMyProfileService();
           //  print(ProfileService.getMyProfileService());
           //  print(myrofileciontroller.userProfile!.userData!.!.pic);
@@ -46,7 +42,7 @@ class NewFeid extends StatelessWidget {
           //  AllUsersrService.getAllUsers();
 
           //   PostClassService.getPostService();
-
+//print(userpostcontroller.singleuser!);
           // String? token = TokenStorage.getUserIdAndToken("token");
         },
         backgroundColor: white1,
@@ -72,12 +68,24 @@ class NewFeid extends StatelessWidget {
             child: ListView.builder(
                 itemCount: postController.allPosts.value.length,
                 itemBuilder: (BuildContext context, index) {
-                  Posts posts = postController.allPosts.value[index];
+                  Posts posts = postController.allPosts[index];
+
+                  DateTime date=DateTime.parse(posts.createdAt!);
+                  var dd= date.day;
+                  var mm= date.month;
+                  var hh= date.hour;
+                  var mi= date.minute;
+                 
 
                   // Like? likes = likecontroller.likes;
+                 
 
                   bool isLiked =
                       posts.likes!.any((element) => element == userId);
+
+                      print("${posts.likes}=====================");
+                      print("${userId}--------------");
+                     // bool islk= isLike==isLiked;
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -146,10 +154,7 @@ class NewFeid extends StatelessWidget {
                                   } else {
                                     postController.putLikes(postId: posts.sId!,);
                                   }
-                                  // likecontroller.putLikes(
-                                  //   postId: likes!.id.toString(),
-                                  // );
-                                  // print(posts.);
+                                
                                 },
                                 icon: Icon(
                                   isLiked
@@ -159,53 +164,40 @@ class NewFeid extends StatelessWidget {
                                   color: isLiked ? red1 : blue1,
                                 ),
                               ),
-                              // : IconButton(
-                              //     onPressed: () {
-                              //       likecontroller.putUnlikes(
-                              //           postId: likes!.id.toString());
-                              //     },
-                              //     icon: Icon(
-                              //       CupertinoIcons.heart,
-                              //       size: 30,
-                              //       color: red1,
-                              //     ),
-                              //   );
-                              // }),
+                             
                               const SizedBox(
                                 width: 10,
                               ),
-                              const Icon(
-                                CupertinoIcons.quote_bubble,
-                                size: 30,
-                                color: blue1,
+                              GestureDetector(
+                                onTap: (){
+                                   Get.to(MyComments(index: index),);
+                                },
+                                child: const Icon(
+                                  CupertinoIcons.chat_bubble,
+                                  size: 30,
+                                  color: blue1,
+                                ),
                               ),
                             ],
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              InkWell(
-                                  child: TextLines(
-                                      title: "${posts.likes!.length} Likes",
+                              TextLines(
+                                  title: "${posts.likes!.length} Likes",
+                                  size: 18,
+                                  fw: FontWeight.bold),
+                             
+                                  TextLines(
+                                      title:
+                                          "${posts.comments!.length} Comments",
                                       size: 18,
-                                      fw: FontWeight.bold)),
-                              Row(
-                                children: [
-                                  InkWell(
-                                      onTap: () => Get.to(Cmt(
-                                            index: index,
-                                          )),
-                                      child: TextLines(
-                                          title:
-                                              "${posts.comments!.length} Comments",
-                                          size: 18,
-                                          fw: FontWeight.bold)),
-                                ],
-                              ),
+                                      fw: FontWeight.bold),
+                                
                               const SizedBox(
                                 height: 5,
                               ),
-                              Text(posts.updatedAt!)
+                             // Text(dd.toString())
                             ],
                           ),
                         ],

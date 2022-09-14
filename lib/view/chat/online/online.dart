@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:trippbuddy/view/1_core/color/colors.dart';
+import 'package:trippbuddy/view/core/color/colors.dart';
 
 class Online extends StatelessWidget {
   const Online({Key? key}) : super(key: key);
