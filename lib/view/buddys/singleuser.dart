@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,32 +11,29 @@ import 'package:trippbuddy/view/core/color/colors.dart';
 import 'package:trippbuddy/view/core/font/font.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
+// ignore: must_be_immutable
 class FriendProfile extends StatelessWidget {
-  FriendProfile({
-    Key? key,
-    required this.userDetails, 
-  }) : super(key: key);
+  FriendProfile({Key? key, required this.userDetails, required this.id,required this.followed})
+      : super(key: key);
   Users userDetails;
-
-
-   String? userId = TokenStorage.getUserIdAndToken("uId");
-
-
-
+  bool followed;
+  int id;
+  String? userId = TokenStorage.getUserIdAndToken("uId");
   @override
   Widget build(BuildContext context) {
     UserPostcontroll userpostcontroller = Get.put(
-      UserPostcontroll(
+      UserPostcontroll(followed: followed,
         userId: userDetails.sId!,
       ),
     );
-
-
 
     AllUsercontroll allUsercontroll = Get.put(AllUsercontroll());
     return Scaffold(
       backgroundColor: white1,
       body: Obx(() {
+        bool followed =
+            userDetails.followers!.any((element) => element.sId == userId);
+        print("${followed}=====follow/unfollow");
         if (userpostcontroller.isLoding.value) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -46,60 +45,73 @@ class FriendProfile extends StatelessWidget {
             headerSliverBuilder: (context, index) {
               return [
                 SliverToBoxAdapter(child: Obx(() {
-      if (allUsercontroll.isLoding.value) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-    //  Users users =allUsercontroll.allUsers![followindex!];
-   //   bool isfollow =users.followers!.any((element) => element==userId);
-      return Container(
-    height: 180,
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10, top: 40),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  userDetails.pic!,
-                ),
-                radius: 60,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30, left: 10.0),
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextLines(
-                      title: userDetails.name!,
-                      size: 20,
-                      fontfamly: logbtn,
-                      fw: FontWeight.w900),
-                     // SizedBox(height: 40,),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: ElevatedButton(
-                     // style: ButtonStyle(shape: OutlinedBorder(side: )),
-                      onPressed: () {
-                    // if (isfollow) {
-                    // userpostcontroller.putFollows(followId: users.followers
-                    // )
-                      
-                    // }
-                       
-                      },
-                      child: Text("unfollow"),
+                  if (allUsercontroll.isLoding.value) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return SizedBox(
+                    height: 180,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, top: 40),
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              userDetails.pic!,
+                            ),
+                            radius: 60,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30, left: 10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextLines(
+                                  title: userDetails.name!,
+                                  size: 20,
+                                  fontfamly: logbtn,
+                                  fw: FontWeight.w900),
+                              // SizedBox(height: 40,),
+                              Padding(
+                                  padding: const EdgeInsets.only(top: 20),
+                                  child: GetBuilder<AllUsercontroll>(
+                                    builder: (context) {
+                                      return ElevatedButton(
+                                        // style: ButtonStyle(shape: OutlinedBorder(side: )),
+                                        onPressed: () {
+                                          if (followed) {
+                                            print("{followed}=======after");
+
+                                            allUsercontroll.putUnfollows(
+                                                unfollowId: userDetails.sId!);
+                                            print("unfollow");
+
+                                            print(
+                                                "${followed}=====follow/unfollow===============");
+                                          } else {
+                                            print("{followed}=======befor");
+                                            allUsercontroll.putFollows(
+                                                followId: userDetails.sId!);
+
+                                            print("follow");
+                                          }
+                                          // }
+                                        },
+                                        child:
+                                            Text(followed ? "unfollow" : "follow"),
+                                      );
+                                    }
+                                  )),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      );
-    })),
+                  );
+                })),
                 SliverAppBar(
                   elevation: 0,
                   pinned: true,
@@ -112,16 +124,20 @@ class FriendProfile extends StatelessWidget {
                     labelColor: Colors.white,
                     unselectedLabelColor: Colors.black,
                     tabs: [
+                      Obx(() {
+                        if (userpostcontroller.isLoding.value) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return Tab(
+                            text: userpostcontroller.singleuser!.posts!.length
+                                .toString());
+                      }),
                       Tab(
-                          text: userpostcontroller.singleuser!.posts!.length
-                              .toString()),
-                      Tab(
-                        text:
-                            "${userpostcontroller.singleuser!.user!.following!.length.toString()} Following ",
+                        text: "${userDetails.following!.length} Following ",
                       ),
-                      Tab(
-                          text:
-                              "${userpostcontroller.singleuser!.user!.followers!.length.toString()} Followers"),
+                      Tab(text: "${userDetails.followers!.length} Followers"),
                     ],
                   ),
                 ),
@@ -143,12 +159,12 @@ class FriendProfile extends StatelessWidget {
   Obx userPic(AllUsercontroll allUsercontroll) {
     return Obx(() {
       if (allUsercontroll.isLoding.value) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       }
-      return Container(
-    height: 180,
+      return SizedBox(
+        height: 180,
         child: Row(
           children: [
             Padding(
@@ -163,7 +179,7 @@ class FriendProfile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30, left: 10.0),
               child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextLines(
@@ -171,13 +187,13 @@ class FriendProfile extends StatelessWidget {
                       size: 20,
                       fontfamly: logbtn,
                       fw: FontWeight.w900),
-                     // SizedBox(height: 40,),
+                  // SizedBox(height: 40,),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: ElevatedButton(
-                     // style: ButtonStyle(shape: OutlinedBorder(side: )),
+                      // style: ButtonStyle(shape: OutlinedBorder(side: )),
                       onPressed: () {},
-                      child: Text("unfollow"),
+                      child: const Text("unfollow"),
                     ),
                   ),
                 ],
@@ -200,7 +216,7 @@ class Follower extends StatelessWidget {
 
   AllUsercontroll allUsercontroll = Get.put(AllUsercontroll());
   UserPostcontroll userpostcontroll = Get.find<UserPostcontroll>();
-
+  String? userId = TokenStorage.getUserIdAndToken("uId");
   @override
   Widget build(BuildContext context) {
     // List<Followers>?followers;
@@ -209,8 +225,8 @@ class Follower extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: userpostcontroll.singleuser!.user!.followers!.length,
         itemBuilder: (context, index) {
-     print( userpostcontroll.singleuser!.user!.followers!.length);
-        print( userpostcontroll.singleuser!.user!.following!.length);
+          print(userpostcontroll.singleuser!.user!.followers!.length);
+          print(userpostcontroll.singleuser!.user!.following!.length);
           return Padding(
             padding: const EdgeInsets.only(bottom: 5),
             child: ListTile(
@@ -218,20 +234,28 @@ class Follower extends StatelessWidget {
               leading: SizedBox(
                 height: 70,
                 width: 70,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: SizedBox.fromSize(
-                      size: const Size.fromRadius(10),
-                      child: Image.network(
-                          userpostcontroll
-                              .singleuser!.user!.followers![index].pic!,
-                          fit: BoxFit.cover,
-                          colorBlendMode: BlendMode.lighten),
-                    )),
+                child: GestureDetector(
+                  onTap: () {
+                    print(
+                        "${userpostcontroll.singleuser!.user!.followers![index].id!}==========follow id");
+                    print("${userId}========myid");
+                  },
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: SizedBox.fromSize(
+                        size: const Size.fromRadius(10),
+                        child: Image.network(
+                            userpostcontroll
+                                .singleuser!.user!.followers![index].pic!,
+                            fit: BoxFit.cover,
+                            colorBlendMode: BlendMode.lighten),
+                      )),
+                ),
               ),
               title: Text(
                 userpostcontroll.singleuser!.user!.followers![index].name!,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               //  trailing: trailing,
             ),
@@ -255,9 +279,7 @@ class Following extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: userpostcontroll.singleuser!.user!.following!.length,
-
         itemBuilder: (context, index) {
-         
           return Padding(
             padding: const EdgeInsets.only(bottom: 5),
             child: ListTile(
@@ -270,12 +292,12 @@ class Following extends StatelessWidget {
                     child: SizedBox.fromSize(
                       size: const Size.fromRadius(10),
                       child: GestureDetector(
-                        onTap: (){
-                           print("62fdb37155f9231730d4e796");
-                          print("${userpostcontroll.singleuser!.user!.id!.toString()}=========usr id");
- print("${userpostcontroll
-
-                              .singleuser!.user!.followers![index].id!}==========follow idrr");
+                        onTap: () {
+                          print("62fdb37155f9231730d4e796");
+                          print(
+                              "${userpostcontroll.singleuser!.user!.id!.toString()}=========usr id");
+                          print(
+                              "${userpostcontroll.singleuser!.user!.followers![index].id!}==========follow idrr");
                         },
                         child: Image.network(
                             userpostcontroll
@@ -287,7 +309,8 @@ class Following extends StatelessWidget {
               ),
               title: Text(
                 userpostcontroll.singleuser!.user!.followers![index].name!,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               //  trailing: trailing,
             ),
@@ -308,13 +331,13 @@ class AddFriendPosts extends StatelessWidget {
         padding: const EdgeInsets.only(top: 20),
         child: Obx(() {
           if (userpostcontroller.isLoding.value) {
-            Center(
+            const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (userpostcontroller.singleuser!.posts!.isEmpty) {
-            Center(
-              child: Text("data"),
+            const Center(
+              child: const Text("data"),
             );
           }
           return ListView.builder(
@@ -363,13 +386,23 @@ class AddFriendPosts extends StatelessWidget {
                               SizedBox(
                                 width: 10,
                               ),
-                              Icon(
-                                CupertinoIcons.person_2_fill,
-                                size: 30,
-                                color: blue1,
-                              ),
                             ],
                           ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${userpostcontroller.singleuser!.posts![index].likes!.length.toString()} likes",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              Text(
+                                "${userpostcontroller.singleuser!.posts![index].comments!.length.toString()} comments",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),

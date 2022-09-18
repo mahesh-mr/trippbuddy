@@ -10,8 +10,8 @@ String newcreatePostToJson(List<NewCreatePost> data) => json.encode(List<dynamic
 
 class NewCreatePost {
     NewCreatePost({
-      required  this.title,
-     required   this.photo,
+      this.title,
+       this.photo,
         this.likes,
         this.postedBy,
         this.id,
@@ -21,8 +21,8 @@ class NewCreatePost {
         this.v,
     });
 
-    String title;
-    String photo;
+    String? title;
+    String? photo;
     List<dynamic>? likes;
     PostedBy? postedBy;
     String? id;

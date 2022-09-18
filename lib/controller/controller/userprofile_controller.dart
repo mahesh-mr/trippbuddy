@@ -11,8 +11,9 @@ class UserPostcontroll extends GetxController {
   SingleUser? singleuser ;
   RxBool isLoding=true.obs;
 String userId;
+bool followed;
  //UserPosts? userPosts
-  UserPostcontroll({required this.userId});
+  UserPostcontroll({required this.userId, required this.followed});
    Future<SingleUser?> getUsersposts() async {
     print("userid"+userId
     
@@ -35,17 +36,8 @@ isLoding.value = false;
     }
   }
 
-  Future <FollowModel?>putFollows({required String followId})async{
-    try {
-      var data = await FollowService.putFollow(followId: followId);
-      print(data);
-      print(("follow controller======"),);
-      return data;
-   } catch (e) {
-      Get.snackbar('oopz', ' $e');
-      print(e);
-    }
-  }
+
+  
 
 
 

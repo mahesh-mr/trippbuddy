@@ -16,17 +16,15 @@ import 'package:trippbuddy/view/widgets/login_button.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 class Createpost extends StatelessWidget {
-  Createpost({
+   Createpost({
     Key? key,
- //   this.isEditing = false,
+
     this.newpost,
-    //this.image,
-   // this.postText,
+  
   }) : super(key: key);
-  // bool isEditing;
+
   NewCreatePost? newpost;
-  //String? image;
- // String? postText;
+
 
   final _fomkey = GlobalKey<FormState>();
   final _title = TextEditingController();
@@ -48,9 +46,7 @@ class Createpost extends StatelessWidget {
         _title.dispose();
         createpostcontroller.imagePath = null;
       }, initState: (state) {
-        // if (isEditing) {
-        //   _title.text = newpost!.title;
-        // }
+       
       }, builder: (controller) {
         return Padding(
           padding: const EdgeInsets.all(10.0),
@@ -104,6 +100,7 @@ class Createpost extends StatelessWidget {
                             await CreatePostService.createPost(
                                 title: _title.text,
                                 avathar: response.secureUrl);
+                                print(_title.text);
                             // if (isEditing) {
                             //   // createpostcontroller
                             // }

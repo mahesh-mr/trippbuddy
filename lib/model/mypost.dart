@@ -34,7 +34,7 @@ class Myposts {
 
   Myposts(
       {
-        required this.sId,
+        this.sId,
       this.title,
       this.photo,
       this.likes,

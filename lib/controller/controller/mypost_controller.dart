@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/service/like_service.dart';
+import 'package:trippbuddy/controller/service/updatepost.dart';
+import 'package:trippbuddy/model/editpost_model.dart';
 import 'package:trippbuddy/model/like.dart';
 import 'package:trippbuddy/model/mypost.dart';
 import 'package:trippbuddy/controller/service/mypost_service.dart';
@@ -30,7 +32,7 @@ class MyPostController extends GetxController{
 
    Future<Like?> putLikes({required String postId}) async {
     try {
-      var data = await LikeServise.putMyLike(postId: postId);
+      var data = await LikeServise.putLike(postId: postId);
       // islike.value==true;
       print(data);
       print("liked-------------------");
@@ -43,7 +45,7 @@ class MyPostController extends GetxController{
 
   Future<Like?> putUnlikes({required String postId}) async {
     try {
-      await LikeServise.putMyUnlike(postId: postId);
+      await LikeServise.putUnlike(postId: postId);
       // islike.value==false;
 
       print("unliked-------------------");
@@ -51,7 +53,21 @@ class MyPostController extends GetxController{
       Get.snackbar('oopz', ' $e');
       print(e);
     }
+    return null;
   }
+Future <EditposttModel?>editPost({
+  required String postId,required String title,
+})async{
+  try {
+    var data = await UpdatePostService.putPost(postId: postId, title: title);
+     print("edit post controll-------------------");
+    } catch (e) {
+      Get.snackbar('oopz', ' $e');
+      print(e);
+    }
+  }
+
+
   @override
   void onInit() {
     print("init state called");

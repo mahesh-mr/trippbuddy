@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/controller/myprofile_controller.dart';
+import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/model/myprofile_modrl.dart';
-import 'package:trippbuddy/model/profile.dart';
 import 'package:trippbuddy/view/core/color/colors.dart';
-import 'package:trippbuddy/view/profile/profile.dart';
 
 class EditProfile extends StatelessWidget {
   EditProfile({Key? key, required this.myprofile}) : super(key: key);
@@ -15,16 +14,24 @@ class EditProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MyProfileController myprofileciontroller = Get.find<MyProfileController>();
+    UserData myprofiles = myprofileciontroller.profile.value!.userData!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: white1,
         elevation: 0,
         centerTitle: true,
-        leading:IconButton(onPressed: (){
-          Get.back();
-        }, icon:   Icon(Icons.arrow_back,color: black1,))
-       ,
-        title: const Text("Edit Profile",style: TextStyle(color: black1),),
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: black1,
+            )),
+        title: const Text(
+          "Edit Profile",
+          style: TextStyle(color: black1),
+        ),
       ),
       body: Obx(() {
         Myprofile? userdata = myprofileciontroller.profile.value;
@@ -35,22 +42,18 @@ class EditProfile extends StatelessWidget {
         }
         return Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 50),
             child: Column(
-            //  crossAxisAlignment:  CrossAxisAlignment.end,
-          //  mainAxisAlignment:  MainAxisAlignment.center,
               children: [
-                 CircleAvatar(
-                      backgroundImage: NetworkImage(myprofile.userData!.pic!),
-                      radius: 60,
-                    ),SizedBox(height: 20,)
-                    ,
-                
-                  
-                  
-                
+                CircleAvatar(
+                  backgroundImage: NetworkImage(myprofile.userData!.pic!),
+                  radius: 60,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 GetBuilder<MyProfileController>(initState: (state) {
-                  nameController.text = myprofile.userData!.name!;
+                  // nameController.text = myprofile.userData!.name!;
                 }, builder: (controller) {
                   return Form(
                     key: formKey,
@@ -81,20 +84,19 @@ class EditProfile extends StatelessWidget {
                           ),
                         ),
                         ElevatedButton(
-                        //  style: ElevatedButton.styleFrom(maximumSize: Size(300, 40)),
+                            //  style: ElevatedButton.styleFrom(maximumSize: Size(300, 40)),
                             onPressed: () {
+                              String? userId =
+                                  TokenStorage.getUserIdAndToken("uId");
                               bool? isValid = formKey.currentState!.validate();
                               print(isValid);
                               print("oldnameeeeeeeeeeeeeeeeeeeee");
 
                               if (isValid) {
-                                final UserData userdata =
-                                    UserData(name: nameController.text);
-                                controller.updateUserData(myprofile);
-                                controller.getMyProfiles();
-                                print(myprofile);
-                                print(myprofile.userData!.name);
-
+                                myprofileciontroller.updateUserData(
+                                    userId: myprofiles.id!,
+                                    name: nameController.text);
+                                Get.back();
                                 // controller.
 
                               }

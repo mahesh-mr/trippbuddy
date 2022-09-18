@@ -1,3 +1,5 @@
+import 'package:trippbuddy/view/buddys/singleuser.dart';
+
 class AllUsers {
   List<Users>? users;
 
@@ -28,7 +30,7 @@ class Users {
   String? pic;
   bool? isBlocked;
   List<Followers>? followers;
-  List<Followers>? following;
+  List<Followings>? following;
   int? iV;
 
   Users(
@@ -54,9 +56,9 @@ class Users {
       });
     }
     if (json['following'] != null) {
-      following = <Followers>[];
+      following = <Followings>[];
       json['following'].forEach((v) {
-        following!.add(new Followers.fromJson(v));
+        following!.add(new Followings.fromJson(v));
       });
     }
     iV = json['__v'];
@@ -88,6 +90,27 @@ class Followers {
   Followers({this.sId, this.name, this.pic});
 
   Followers.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    pic = json['pic'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['pic'] = this.pic;
+    return data;
+  }
+}
+class Followings {
+  String? sId;
+  String? name;
+  String? pic;
+
+  Followings({this.sId, this.name, this.pic});
+
+  Followings.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     pic = json['pic'];

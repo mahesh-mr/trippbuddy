@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/controller/service/Token/dio_clint.dart';
 import 'package:trippbuddy/model/singuip.dart';
+import 'package:trippbuddy/model/userpost.dart';
 import 'package:trippbuddy/view/auth/log.dart';
 
 class Auth {
@@ -110,32 +113,28 @@ class Auth {
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< update password>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   }
 
-  static Future<SignUser?>UpdatePassword(
-   SignUser singup,
-    String newPassword,
-  
+  static Future<SignupModel?>UpdatePassword({
+    required String oldPassword,required String newPassword,required String userId 
+  }
+ 
+   
   )async {
-    //  String? userId = TokenStorage.getUserIdAndToken("uId");
        String? token = TokenStorage.getUserIdAndToken("token");
-
     try {
       final response = await DioClient.dio.put("/updatepassword ", 
       data:{
-     
       "newPassword":newPassword,
-    
-
-
-      },
-      
+      "oldPassword":oldPassword,"userId":userId,}
+,      
         options: Options(
           headers: {"Authorization": "Bearer $token"},
         ),);
+        SignupModel signUser =signupFromJson(jsonEncode(response.data),);
     
      print(token);
-    
+    print("password changeeeeee");
       print(response.data);
-    
+    return response.data;
     //  return "success";
    } on DioError catch (e) {
       if (e.type == DioErrorType.other) {

@@ -14,17 +14,12 @@ class ProfileService {
        var response = await DioClient.dio.get("/profile",
        options: Options(
         headers: {"Authorization": "Bearer $token"},
-
        ));
        Myprofile userProfile = Myprofile.fromJson(response.data);
-    
-       
           print(response.data);
           print(userProfile.userData!.email!);
           print("profileeeeeeeeeeeeeeeeeee");
-
        return userProfile;
-
      }on DioError catch(e){
       print("6656566565656556565");
       print(e.response!.data);
@@ -32,27 +27,22 @@ class ProfileService {
      }
       catch (e) {
       print(e);
-
      }
     return null;
-
-
   }
 
-  static  Future <Myprofile?>updateUserProfile(
-    Myprofile myprofile
+  static  Future <Myprofile?>updateUserProfile({required String userId, required String name}
+   
   )async {
        String? token = TokenStorage.getUserIdAndToken("token"); 
           String? userId = TokenStorage.getUserIdAndToken("uId"); 
           try {
-            Map newprofile = UserData(
-              name: myprofile.userData!.name
-            ).toJson();
-            var response =await DioClient.dio.put("/updateuser",data: newprofile, options: Options(
+          
+            var response =await DioClient.dio.put("/updateuser",data: {"userId":userId, "name":name}, options: Options(
         headers: {"Authorization": "Bearer $token"},
 
        ));
-       Myprofile editmyprofile =Myprofile.fromJson(response.data);
+       Myprofile editmyprofile =myprofileFromJson(jsonEncode(response.data));
 
  Get.snackbar('Success', response.data['message'],
           backgroundColor: red1);

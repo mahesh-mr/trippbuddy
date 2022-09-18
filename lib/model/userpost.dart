@@ -15,11 +15,11 @@ class SingleUser {
     });
 
     User? user;
-    List<Post>? posts;
+    List<Postd>? posts;
 
     factory SingleUser.fromJson(Map<String, dynamic> json) => SingleUser(
         user: User.fromJson(json["user"]),
-        posts: List<Post>.from(json["posts"].map((x) => Post.fromJson(x))),
+        posts: List<Postd>.from(json["posts"].map((x) => Postd.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -28,8 +28,8 @@ class SingleUser {
     };
 }
 
-class Post {
-    Post({
+class Postd {
+    Postd({
         this.id,
         this.title,
         this.photo,
@@ -51,7 +51,7 @@ class Post {
     DateTime? updatedAt;
     int? v;
 
-    factory Post.fromJson(Map<String, dynamic> json) => Post(
+    factory Postd.fromJson(Map<String, dynamic> json) => Postd(
         id: json["_id"],
         title: json["title"],
         photo: json["photo"],

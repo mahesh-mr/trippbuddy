@@ -23,11 +23,11 @@ class MyProfileController extends GetxController{
 
     
   }
-    Future updateUserData( Myprofile myprofile)async{
+    Future<Myprofile?>updateUserData( {required String userId,required String name })async{
     try {
-      var data =await ProfileService.updateUserProfile(myprofile);
+      var data =await ProfileService.updateUserProfile(userId: userId, name: name);
         print("called controller class $data");
-        profile.value=data;
+        
   } catch (e) {
       print("Catch block called");
       print(e);

@@ -1,14 +1,13 @@
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/service/like_service.dart';
+import 'package:trippbuddy/model/delete_cmt_model.dart';
 import 'package:trippbuddy/model/post_model.dart';
 import 'package:trippbuddy/controller/service/comments_service.dart';
 import 'package:trippbuddy/controller/service/allpost_service.dart';
 
 import '../../model/like.dart';
 
-
 class PostController extends GetxController {
- 
   RxList<Posts> allPosts = <Posts>[].obs;
   RxBool loding = true.obs;
 
@@ -48,16 +47,25 @@ class PostController extends GetxController {
   }
 
   Future<Comments?> putMycomments(
-      {required String postId, required String title})async {
-        try {
-          await CommntService.postComment(postId: postId, title: title);
-        print("comments---------");
-        
-        } catch (e) {
-          Get.snackbar("sorry", "$e");
-        }
+      {required String postId, required String text}) async {
+    try {
+      await CommntService.postComment(postId: postId, text: text);
+      print("comments---------");
+    } catch (e) {
+      Get.snackbar("sorry", "$e");
+    }
+  }
 
-      }
+  Future <DeleteCntModel?>deleteCmt({
+    required String postId,required String commentId
+  })async {
+    try {
+      await CommntService.deleteCmt(postId: postId, commentId: commentId);
+      print("delete comment=======");
+     } catch (e) {
+      Get.snackbar("sorry", "$e");
+    }
+  }
 
   @override
   void onInit() {

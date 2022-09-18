@@ -1,4 +1,4 @@
-  // ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,43 +7,25 @@ import 'package:trippbuddy/controller/controller/allpost_controller.dart';
 import 'package:trippbuddy/model/post_model.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/view/core/color/colors.dart';
-import 'package:trippbuddy/view/createpost/createpost.dart';
-import 'package:trippbuddy/view/home/comt/cmt.dart';
+import 'package:trippbuddy/view/home/createpost.dart';
+import 'package:trippbuddy/view/home/cmt.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
-
-// ignore: must_be_immutable
-class NewFeid extends StatelessWidget {  
+class NewFeid extends StatelessWidget {
   NewFeid({Key? key}) : super(key: key);
   PostController postController = Get.put(PostController());
- ////  UserPostcontroll  userpostcontroller = Get.put(UserPostcontroll());
- // AllUsercontroll allUsercontroller = Get.put(AllUsercontroll());
- // MyProfileController myrofileciontroller = Get.put(MyProfileController());
- // LikeController likecontroller = Get.put(LikeController());
 
   String? userId = TokenStorage.getUserIdAndToken("uId");
 
-
   @override
   Widget build(BuildContext context) {
-    // Like? likes ;
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-        
-
-          //   ProfileService.getMyProfileService();
-          //  print(ProfileService.getMyProfileService());
-          //  print(myrofileciontroller.userProfile!.userData!.!.pic);
           Get.to(Createpost());
-          //  AllUsersrService.getAllUsers();
-
-          //   PostClassService.getPostService();
-//print(userpostcontroller.singleuser!);
-          // String? token = TokenStorage.getUserIdAndToken("token");
         },
         backgroundColor: white1,
         child: const Icon(
@@ -70,22 +52,16 @@ class NewFeid extends StatelessWidget {
                 itemBuilder: (BuildContext context, index) {
                   Posts posts = postController.allPosts[index];
 
-                  DateTime date=DateTime.parse(posts.createdAt!);
-                  var dd= date.day;
-                  var mm= date.month;
-                  var hh= date.hour;
-                  var mi= date.minute;
-                 
-
-                  // Like? likes = likecontroller.likes;
-                 
-
+                  DateTime date = DateTime.parse(posts.createdAt!);
+                  var dd = date.day;
+                  var mm = date.month;
+                  var hh = date.hour;
+                  var mi = date.minute;
                   bool isLiked =
                       posts.likes!.any((element) => element == userId);
-
-                      print("${posts.likes}=====================");
+                        print("${posts.likes!}=====================");
                       print("${userId}--------------");
-                     // bool islk= isLike==isLiked;
+                      print("${isLiked}========909090");
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -141,10 +117,7 @@ class NewFeid extends StatelessWidget {
                             height: height * .006,
                           ),
                           Row(
-                            // ignore: prefer_const_literals_to_create_immutables
                             children: [
-                              // Obx(() {
-
                               IconButton(
                                 onPressed: () {
                                   if (isLiked) {
@@ -152,9 +125,10 @@ class NewFeid extends StatelessWidget {
                                       postId: posts.sId!,
                                     );
                                   } else {
-                                    postController.putLikes(postId: posts.sId!,);
+                                    postController.putLikes(
+                                      postId: posts.sId!,
+                                    );
                                   }
-                                
                                 },
                                 icon: Icon(
                                   isLiked
@@ -164,13 +138,14 @@ class NewFeid extends StatelessWidget {
                                   color: isLiked ? red1 : blue1,
                                 ),
                               ),
-                             
                               const SizedBox(
                                 width: 10,
                               ),
                               GestureDetector(
-                                onTap: (){
-                                   Get.to(MyComments(index: index),);
+                                onTap: () {
+                                  Get.to(
+                                    MyComments(cindex: index),
+                                  );
                                 },
                                 child: const Icon(
                                   CupertinoIcons.chat_bubble,
@@ -187,17 +162,16 @@ class NewFeid extends StatelessWidget {
                                   title: "${posts.likes!.length} Likes",
                                   size: 18,
                                   fw: FontWeight.bold),
-                             
-                                  TextLines(
-                                      title:
-                                          "${posts.comments!.length} Comments",
-                                      size: 18,
-                                      fw: FontWeight.bold),
-                                
+
+                              TextLines(
+                                  title: "${posts.comments!.length} Comments",
+                                  size: 18,
+                                  fw: FontWeight.bold),
+
                               const SizedBox(
                                 height: 5,
                               ),
-                             // Text(dd.toString())
+                              // Text(dd.toString())
                             ],
                           ),
                         ],

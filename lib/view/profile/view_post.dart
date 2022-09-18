@@ -6,11 +6,10 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:trippbuddy/controller/controller/mypost_controller.dart';
 import 'package:trippbuddy/controller/controller/allpost_controller.dart';
 import 'package:trippbuddy/model/mypost.dart';
-
 import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/view/core/color/colors.dart';
 import 'package:trippbuddy/view/core/font/font.dart';
-import 'package:trippbuddy/view/createpost/createpost.dart';
+import 'package:trippbuddy/view/profile/updatepost.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 // ignore: must_be_immutable
@@ -24,9 +23,6 @@ class ViewPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Posts mypost= myPostController.allMyPosts.value[mypostViewInx];
-    // Posts posts = postController.allPosts.value[mypostViewInx];
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -67,7 +63,7 @@ class ViewPost extends StatelessWidget {
                   itemCount: myPostController.allMyPosts.value.length,
                   initialScrollIndex: mypostViewInx,
                   itemBuilder: (context, index) {
-                    final viewMyPost = myPostController.allMyPosts[index];
+                    // Myposts viewMyPost = myPostController.allMyPosts[index];
                     Myposts posts = myPostController.allMyPosts[index];
                     bool isLiked =
                         posts.likes!.any((element) => element == userId);
@@ -102,10 +98,7 @@ class ViewPost extends StatelessWidget {
                                   const Spacer(),
                                   IconButton(
                                     onPressed: () {
-                                      Get.to(Createpost(
-                                          //image: viewMyPost.photo!,
-                                          //  postText: viewMyPost.title!,
-                                          ));
+                                      Get.to(UpdatedPost(editindex: index));
                                     },
                                     icon: Icon(
                                       Icons.edit,
@@ -139,14 +132,19 @@ class ViewPost extends StatelessWidget {
                                       color: isLiked ? red1 : blue1,
                                     ),
                                   ),
-                                  // SizedBox(
-                                  //   width: 10,
-                                  // ),
-                                  // Icon(
-                                  //   CupertinoIcons.quote_bubble,
-                                  //   size: 30,
-                                  //   color: blue1,
-                                  // ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      //    UpdatedPost(editindex: index);
+                                    },
+                                    icon: Icon(
+                                      CupertinoIcons.quote_bubble,
+                                      size: 30,
+                                      color: blue1,
+                                    ),
+                                  ),
                                 ],
                               ),
                               TextLines(

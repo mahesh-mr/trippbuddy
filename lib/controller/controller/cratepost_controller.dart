@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:trippbuddy/controller/service/createpost_service.dart';
+import 'package:trippbuddy/model/editpost_model.dart';
 
 class CreatepostController extends GetxController{
   String? imagePath;
+  EditposttModel? editpostmodel;
   final ImagePicker imagePicker = ImagePicker();
   Future picImage(ImageSource imageSource)async {
     XFile? image = await imagePicker.pickImage(source: imageSource);
@@ -13,4 +16,11 @@ class CreatepostController extends GetxController{
     Get.back();
     update();
   }
+
+
+
+
+
+
+
 }
