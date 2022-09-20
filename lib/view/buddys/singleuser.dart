@@ -13,7 +13,11 @@ import 'package:trippbuddy/view/widgets/text.dart';
 
 // ignore: must_be_immutable
 class FriendProfile extends StatelessWidget {
-  FriendProfile({Key? key, required this.userDetails, required this.id,required this.followed})
+  FriendProfile(
+      {Key? key,
+      required this.userDetails,
+      required this.id,
+      required this.followed})
       : super(key: key);
   Users userDetails;
   bool followed;
@@ -22,24 +26,26 @@ class FriendProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserPostcontroll userpostcontroller = Get.put(
-      UserPostcontroll(followed: followed,
+      UserPostcontroll(
+        followed: followed,
         userId: userDetails.sId!,
       ),
     );
 
     AllUsercontroll allUsercontroll = Get.put(AllUsercontroll());
     return Scaffold(
-      backgroundColor: white1,
-      body: Obx(() {
-        bool followed =
-            userDetails.followers!.any((element) => element.sId == userId);
-        print("${followed}=====follow/unfollow");
-        if (userpostcontroller.isLoding.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return DefaultTabController(
+        backgroundColor: white1,
+        body:
+            // bool followed =
+            //     userDetails.followers!.any((element) => element.sId == userId);
+            // print("${followed}=====follow/unfollow");
+            // if (userpostcontroller.isLoding.value) {
+            //   return const Center(
+            //     child: CircularProgressIndicator(),
+            //   );
+            // }
+
+            DefaultTabController(
           length: 3,
           child: NestedScrollView(
             headerSliverBuilder: (context, index) {
@@ -77,34 +83,34 @@ class FriendProfile extends StatelessWidget {
                               // SizedBox(height: 40,),
                               Padding(
                                   padding: const EdgeInsets.only(top: 20),
-                                  child: GetBuilder<AllUsercontroll>(
-                                    builder: (context) {
-                                      return ElevatedButton(
-                                        // style: ButtonStyle(shape: OutlinedBorder(side: )),
-                                        onPressed: () {
-                                          if (followed) {
-                                            print("{followed}=======after");
+                                  child: GetBuilder<UserPostcontroll>(
+                                      builder: (controller) {
+                                    return ElevatedButton(
+                                      // style: ButtonStyle(shape: OutlinedBorder(side: )),
+                                      onPressed: () {
+                                       controller.followAndUnfollow();
 
-                                            allUsercontroll.putUnfollows(
-                                                unfollowId: userDetails.sId!);
-                                            print("unfollow");
+                                        if (controller.followed) {
+                                          print("{followed}=======after");
 
-                                            print(
-                                                "${followed}=====follow/unfollow===============");
-                                          } else {
-                                            print("{followed}=======befor");
-                                            allUsercontroll.putFollows(
-                                                followId: userDetails.sId!);
+                                          allUsercontroll.putUnfollows(
+                                              unfollowId: userDetails.sId!);
+                                          print("unfollow");
 
-                                            print("follow");
-                                          }
-                                          // }
-                                        },
-                                        child:
-                                            Text(followed ? "unfollow" : "follow"),
-                                      );
-                                    }
-                                  )),
+                                          print(
+                                              "${followed}=====follow/unfollow===============");
+                                        } else {
+                                          print("{followed}=======befor");
+                                          allUsercontroll.putFollows(
+                                              followId: userDetails.sId!);
+                                        }
+                                        controller.getUsersposts();
+                                      },
+                                      child: Text(controller.followed
+                                          ? "unfollow"
+                                          : "follow"),
+                                    );
+                                  })),
                             ],
                           ),
                         )
@@ -131,13 +137,22 @@ class FriendProfile extends StatelessWidget {
                           );
                         }
                         return Tab(
-                            text: userpostcontroller.singleuser!.posts!.length
+                            text: userpostcontroller
+                                .singleuser.value!.posts!.length
                                 .toString());
                       }),
                       Tab(
                         text: "${userDetails.following!.length} Following ",
                       ),
-                      Tab(text: "${userDetails.followers!.length} Followers"),
+                      Obx(() {
+                        if (userpostcontroller.isLoding.value) {
+                          return SizedBox();
+                        }
+
+                        return Tab(
+                            text:
+                                "${userpostcontroller.singleuser.value!.user!.followers!.length} Followers");
+                      }),
                     ],
                   ),
                 ),
@@ -145,15 +160,24 @@ class FriendProfile extends StatelessWidget {
             },
             body: TabBarView(
               children: [
-                AddFriendPosts(),
+                Obx(
+                   () {
+                    if (userpostcontroller.isLoding.value) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+                    return AddFriendPosts();
+                  }
+                ),
                 Following(userDetails: userDetails),
                 Follower(userDetails: userDetails),
               ],
             ),
           ),
+        )
+        // }),
         );
-      }),
-    );
   }
 
   Obx userPic(AllUsercontroll allUsercontroll) {
@@ -220,47 +244,56 @@ class Follower extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // List<Followers>?followers;
-    return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: userpostcontroll.singleuser!.user!.followers!.length,
-        itemBuilder: (context, index) {
-          print(userpostcontroll.singleuser!.user!.followers!.length);
-          print(userpostcontroll.singleuser!.user!.following!.length);
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 5),
-            child: ListTile(
-              // onTap: ontap,
-              leading: SizedBox(
-                height: 70,
-                width: 70,
-                child: GestureDetector(
-                  onTap: () {
-                    print(
-                        "${userpostcontroll.singleuser!.user!.followers![index].id!}==========follow id");
-                    print("${userId}========myid");
-                  },
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: SizedBox.fromSize(
-                        size: const Size.fromRadius(10),
-                        child: Image.network(
-                            userpostcontroll
-                                .singleuser!.user!.followers![index].pic!,
-                            fit: BoxFit.cover,
-                            colorBlendMode: BlendMode.lighten),
-                      )),
+    return Obx(() {
+      if (userpostcontroll.isLoding.value) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: userpostcontroll.singleuser.value!.user!.followers!.length,
+          itemBuilder: (context, index) {
+            print(userpostcontroll.singleuser.value!.user!.followers!.length);
+            print(userpostcontroll.singleuser.value!.user!.following!.length);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: ListTile(
+                // onTap: ontap,
+                leading: SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: GestureDetector(
+                    onTap: () {
+                      print(
+                          "${userpostcontroll.singleuser.value!.user!.followers![index].id!}==========follow id");
+                      print("${userId}========myid");
+                    },
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox.fromSize(
+                          size: const Size.fromRadius(10),
+                          child: Image.network(
+                              userpostcontroll.singleuser.value!.user!
+                                  .followers![index].pic!,
+                              fit: BoxFit.cover,
+                              colorBlendMode: BlendMode.lighten),
+                        )),
+                  ),
                 ),
+                title: Text(
+                  userpostcontroll
+                      .singleuser.value!.user!.followers![index].name!,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                //  trailing: trailing,
               ),
-              title: Text(
-                userpostcontroll.singleuser!.user!.followers![index].name!,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              //  trailing: trailing,
-            ),
-          );
-        });
+            );
+          });
+    });
   }
 }
 
@@ -275,47 +308,56 @@ class Following extends StatelessWidget {
   Widget build(BuildContext context) {
     UserPostcontroll userpostcontroll = Get.find<UserPostcontroll>();
     // List<Followers>?followers;
-    return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: userpostcontroll.singleuser!.user!.following!.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 5),
-            child: ListTile(
-              // onTap: ontap,
-              leading: SizedBox(
-                height: 70,
-                width: 70,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: SizedBox.fromSize(
-                      size: const Size.fromRadius(10),
-                      child: GestureDetector(
-                        onTap: () {
-                          print("62fdb37155f9231730d4e796");
-                          print(
-                              "${userpostcontroll.singleuser!.user!.id!.toString()}=========usr id");
-                          print(
-                              "${userpostcontroll.singleuser!.user!.followers![index].id!}==========follow idrr");
-                        },
-                        child: Image.network(
-                            userpostcontroll
-                                .singleuser!.user!.followers![index].pic!,
-                            fit: BoxFit.cover,
-                            colorBlendMode: BlendMode.lighten),
-                      ),
-                    )),
+    return Obx(() {
+      if (userpostcontroll.isLoding.value) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: userpostcontroll.singleuser.value!.user!.following!.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: ListTile(
+                // onTap: ontap,
+                leading: SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: SizedBox.fromSize(
+                        size: const Size.fromRadius(10),
+                        child: GestureDetector(
+                          onTap: () {
+                            print("62fdb37155f9231730d4e796");
+                            print(
+                                "${userpostcontroll.singleuser.value!.user!.id!.toString()}=========usr id");
+                            print(
+                                "${userpostcontroll.singleuser.value!.user!.followers![index].id!}==========follow idrr");
+                          },
+                          child: Image.network(
+                              userpostcontroll.singleuser.value!.user!
+                                  .following![index].pic!,
+                              fit: BoxFit.cover,
+                              colorBlendMode: BlendMode.lighten),
+                        ),
+                      )),
+                ),
+                title: Text(
+                  userpostcontroll
+                      .singleuser.value!.user!.following![index].name!,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                //  trailing: trailing,
               ),
-              title: Text(
-                userpostcontroll.singleuser!.user!.followers![index].name!,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              //  trailing: trailing,
-            ),
-          );
-        });
+            );
+          });
+    });
   }
 }
 //single frends post==========================================================================================================
@@ -335,14 +377,14 @@ class AddFriendPosts extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          if (userpostcontroller.singleuser!.posts!.isEmpty) {
+          if (userpostcontroller.singleuser.value!.posts!.isEmpty) {
             const Center(
               child: const Text("data"),
             );
           }
           return ListView.builder(
               shrinkWrap: true,
-              itemCount: userpostcontroller.singleuser!.posts!.length,
+              itemCount: userpostcontroller.singleuser.value!.posts!.length,
               itemBuilder: (BuildContext context, index) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -351,7 +393,8 @@ class AddFriendPosts extends StatelessWidget {
                       width: double.infinity,
                       height: 250,
                       child: Image.network(
-                        userpostcontroller.singleuser!.posts![index].photo!,
+                        userpostcontroller
+                            .singleuser.value!.posts![index].photo!,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -363,7 +406,7 @@ class AddFriendPosts extends StatelessWidget {
                         children: [
                           TextLines(
                               title: userpostcontroller
-                                  .singleuser!.posts![index].title!,
+                                  .singleuser.value!.posts![index].title!,
                               size: 18,
                               fontfamly: headline,
                               color: const Color.fromARGB(255, 104, 101, 101),
@@ -392,12 +435,12 @@ class AddFriendPosts extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${userpostcontroller.singleuser!.posts![index].likes!.length.toString()} likes",
+                                "${userpostcontroller.singleuser.value!.posts![index].likes!.length.toString()} likes",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
                               Text(
-                                "${userpostcontroller.singleuser!.posts![index].comments!.length.toString()} comments",
+                                "${userpostcontroller.singleuser.value!.posts![index].comments!.length.toString()} comments",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               )

@@ -6,33 +6,29 @@ import 'package:trippbuddy/model/like.dart';
 import 'package:trippbuddy/model/mypost.dart';
 import 'package:trippbuddy/controller/service/mypost_service.dart';
 
-class MyPostController extends GetxController{
- RxList<Myposts> allMyPosts =<Myposts> [].obs;
-  
+class MyPostController extends GetxController {
+  RxList<Myposts> allMyPosts = <Myposts>[].obs;
+
   RxBool loding = true.obs;
 
-  Future<List<Myposts>?>getallMyPosts()async{
+  Future<List<Myposts>?> getallMyPosts() async {
     try {
-    var data = await MyPostService.getMyPosts();
+      var data = await MyPostService.getMyPosts();
       loding.value = false;
-     // print(data);
       print("mypost1111111111111111111111111111");
       return data!;
     } catch (e) {
       Get.snackbar('oopz', ' $e');
-
       print(e);
-
       print('catch bloc called');
 
       loding.value = false;
-     
     }
   }
 
-   Future<Like?> putLikes({required String postId}) async {
+  Future<Like?> putLikes({required String postId}) async {
     try {
-      var data = await LikeServise.putLike(postId: postId);
+      var data = await LikeServise.putMyLike(postId: postId);
       // islike.value==true;
       print(data);
       print("liked-------------------");
@@ -45,7 +41,7 @@ class MyPostController extends GetxController{
 
   Future<Like?> putUnlikes({required String postId}) async {
     try {
-      await LikeServise.putUnlike(postId: postId);
+      await LikeServise.putMyLike(postId: postId);
       // islike.value==false;
 
       print("unliked-------------------");
@@ -55,24 +51,24 @@ class MyPostController extends GetxController{
     }
     return null;
   }
-Future <EditposttModel?>editPost({
-  required String postId,required String title,
-})async{
-  try {
-    var data = await UpdatePostService.putPost(postId: postId, title: title);
-     print("edit post controll-------------------");
+
+  Future<EditposttModel?> editPost({
+    required String postId,
+    required String title,
+  }) async {
+    try {
+      var data = await UpdatePostService.putPost(postId: postId, title: title);
+      print("edit post controll-------------------");
     } catch (e) {
       Get.snackbar('oopz', ' $e');
       print(e);
     }
   }
 
-
   @override
   void onInit() {
     print("init state called");
-   getallMyPosts().then((value) =>allMyPosts.value= value! );
+    getallMyPosts().then((value) => allMyPosts.value = value!);
     super.onInit();
   }
-
 }

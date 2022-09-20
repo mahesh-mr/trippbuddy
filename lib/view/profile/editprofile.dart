@@ -15,6 +15,7 @@ class EditProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     MyProfileController myprofileciontroller = Get.find<MyProfileController>();
     UserData myprofiles = myprofileciontroller.profile.value!.userData!;
+  nameController.text =  myprofile.userData!.name!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: white1,

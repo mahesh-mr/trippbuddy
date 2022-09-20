@@ -68,19 +68,15 @@ class FrendsList extends StatelessWidget {
                       itemBuilder: (context, index) {
                         String? userId = TokenStorage.getUserIdAndToken("uId");
                         Users userDetails = allUsercontroller.allUsers![index];
-                        bool followed = userDetails.followers!
-                            .any((element) => element == userId);
+                        
                         return InkWell(
                           onTap: () {
                                  bool followed = userDetails.followers!
                             .any((element) => element.sId == userId);
-                            if (followed) {
-                              print("follow");
-                            } else {
-                              print("unfollow");
-                            }
-                            print(userDetails.sId);
-                            print(userDetails.name);
+
+                            print("${followed} dlfkklf");
+                            print(userId);
+                            print(userDetails.followers!.map((e) => e.sId));
                             Get.to(
                               FriendProfile(
                                   id: index, userDetails: userDetails,followed: followed),

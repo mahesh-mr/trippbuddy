@@ -71,125 +71,125 @@ class Profile extends StatelessWidget {
                                               onTap: () {
                                                 Get.to(EditProfile(
                                                   myprofile: mprofile2,
-                                                ));
+                                                ))?.then((value) =>   Navigator.pop(context));
                                                 //    Get.back();
                                               },
                                               leading: Icon(Icons.edit),
                                               title: Text("Edit Profile"),
                                             ),
-                                            ListTile(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                      //   backgroundColor: themeColor,
-                                                      content: SizedBox(
-                                                        height: 280,
-                                                        child: Form(
-                                                          key: formKey,
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Column(
-                                                              children: [
-                                                                Text(
-                                                                  'Reset Your Password',
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color:
-                                                                          black1,
-                                                                      fontSize:
-                                                                          20),
-                                                                ),
-                                                                //  sizedBox10,
-                                                                TextFormPage(
-                                                                    title:
-                                                                        'Password',
-                                                                    controller:
-                                                                        _passwordController,
-                                                                    obscuretext:
-                                                                        true,
-                                                                    validator:
-                                                                        (value) {
-                                                                      if (value!
-                                                                          .isEmpty) {
-                                                                        return 'Please enter password';
-                                                                      } else if (value
-                                                                              .length <
-                                                                          6) {
-                                                                        return 'please enter atleast 6 digit password';
-                                                                      }
+                                            // ListTile(
+                                            //   onTap: () {
+                                            //     showDialog(
+                                            //       context: context,
+                                            //       builder: (context) {
+                                            //         return AlertDialog(
+                                            //           shape:
+                                            //               RoundedRectangleBorder(
+                                            //                   borderRadius:
+                                            //                       BorderRadius
+                                            //                           .circular(
+                                            //                               10)),
+                                            //           //   backgroundColor: themeColor,
+                                            //           content: SizedBox(
+                                            //             height: 280,
+                                            //             child: Form(
+                                            //               key: formKey,
+                                            //               child:
+                                            //                   SingleChildScrollView(
+                                            //                 child: Column(
+                                            //                   children: [
+                                            //                     Text(
+                                            //                       'Reset Your Password',
+                                            //                       style: TextStyle(
+                                            //                           fontWeight:
+                                            //                               FontWeight
+                                            //                                   .w600,
+                                            //                           color:
+                                            //                               black1,
+                                            //                           fontSize:
+                                            //                               20),
+                                            //                     ),
+                                            //                     //  sizedBox10,
+                                            //                     TextFormPage(
+                                            //                         title:
+                                            //                             'Password',
+                                            //                         controller:
+                                            //                             _passwordController,
+                                            //                         obscuretext:
+                                            //                             true,
+                                            //                         validator:
+                                            //                             (value) {
+                                            //                           if (value!
+                                            //                               .isEmpty) {
+                                            //                             return 'Please enter password';
+                                            //                           } else if (value
+                                            //                                   .length <
+                                            //                               6) {
+                                            //                             return 'please enter atleast 6 digit password';
+                                            //                           }
 
-                                                                      return null;
-                                                                    }),
-                                                                TextFormPage(
-                                                                  title:
-                                                                      'Confirm Password',
-                                                                  controller:
-                                                                      confirmPasswordController,
-                                                                  obscuretext:
-                                                                      true,
-                                                                  validator:
-                                                                      (value) {
-                                                                    if (value!
-                                                                        .isEmpty) {
-                                                                      return 'Please confirm password';
-                                                                    }
-                                                                    return null;
-                                                                  },
-                                                                ),
+                                            //                           return null;
+                                            //                         }),
+                                            //                     TextFormPage(
+                                            //                       title:
+                                            //                           'Confirm Password',
+                                            //                       controller:
+                                            //                           confirmPasswordController,
+                                            //                       obscuretext:
+                                            //                           true,
+                                            //                       validator:
+                                            //                           (value) {
+                                            //                         if (value!
+                                            //                             .isEmpty) {
+                                            //                           return 'Please confirm password';
+                                            //                         }
+                                            //                         return null;
+                                            //                       },
+                                            //                     ),
 
-                                                                ElevatedButton(
-                                                                    // style: elvButtonStyleWhite,
-                                                                    onPressed:
-                                                                        () {
-                                                                      bool?
-                                                                          isValid =
-                                                                          formKey
-                                                                              .currentState!
-                                                                              .validate();
-                                                                      print(
-                                                                          isValid);
+                                            //                     ElevatedButton(
+                                            //                         // style: elvButtonStyleWhite,
+                                            //                         onPressed:
+                                            //                             () {
+                                            //                           bool?
+                                            //                               isValid =
+                                            //                               formKey
+                                            //                                   .currentState!
+                                            //                                   .validate();
+                                            //                           print(
+                                            //                               isValid);
 
-                                                                      if (isValid) {
-                                                                        final SignUser
-                                                                            signUp =
-                                                                            SignUser(password: _passwordController.text);
+                                            //                           if (isValid) {
+                                            //                             final SignUser
+                                            //                                 signUp =
+                                            //                                 SignUser(password: _passwordController.text);
 
-                                                                        signUpController.resetPassword(
-                                                                            oldPassword:
-                                                                                _passwordController.text,
-                                                                            newPassword: confirmPasswordController.text,
-                                                                            userId: userid!);
-                                                                      }
-                                                                    },
-                                                                    child:
-                                                                        const Text(
-                                                                      'Reset',
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ))
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              leading: Icon(Icons.lock),
-                                              title: Text("Edit Password"),
-                                            ),
+                                            //                             signUpController.resetPassword(
+                                            //                                 oldPassword:
+                                            //                                     _passwordController.text,
+                                            //                                 newPassword: confirmPasswordController.text,
+                                            //                                 userId: userid!);
+                                            //                           }
+                                            //                         },
+                                            //                         child:
+                                            //                             const Text(
+                                            //                           'Reset',
+                                            //                           style: TextStyle(
+                                            //                               color:
+                                            //                                   Colors.black),
+                                            //                         ))
+                                            //                   ],
+                                            //                 ),
+                                            //               ),
+                                            //             ),
+                                            //           ),
+                                            //         );
+                                            //       },
+                                            //       ).then((value) =>   Navigator.pop(context));
+                                            //   },
+                                            //   leading: Icon(Icons.lock),
+                                            //   title: Text("Edit Password"),
+                                            // ),
                                             ListTile(
                                               onTap: () {
                                                 TokenStorage.removed("token");

@@ -21,26 +21,19 @@ class UpdatedPost extends StatelessWidget {
     CreatepostController(),
   );
   MyPostController myPostController = Get.find<MyPostController>();
+  
 
 
   @override
   Widget build(BuildContext context) {
     Myposts posts = myPostController.allMyPosts[editindex];
+    _updatetitle.text =posts.title!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: GetBuilder<CreatepostController>(
-          dispose: (_) {
-            _updatetitle.dispose();
- 
-          },
-          initState: (state) {
-               _updatetitle.text = myprofile.userData!.name!;
-          },
-          builder: (controller) {
-            return Padding(
+      body:  Padding(
               padding: const EdgeInsets.all(10.0),
               child: ListView(
                 children: [
@@ -60,7 +53,28 @@ class UpdatedPost extends StatelessWidget {
                     key: _fomkey,
                     child: Column(
                       children: [
-                        textFom(),
+                       TextFormField(
+                        controller: _updatetitle,
+                        validator:  (value) {
+        if (value!.isEmpty) {
+          return "capttion minimum  1 length";
+        } else if (!RegExp(r'(^[a-z A-Z]+$)').hasMatch(value)) {
+          return 'Please enter a valid name';
+        } else {
+          return null;
+        }
+      }, 
+ 
+  decoration: InputDecoration(
+ 
+    border:OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+   
+  ),
+),
+
+                    
                         SizedBox(
                           height: 10,
                         ),
@@ -83,11 +97,13 @@ class UpdatedPost extends StatelessWidget {
                   )
                 ],
               ),
-            );
-          }),
+            ),
+          
     );
   }
   
+
+
 
   TextForm textFom() {
     return TextForm(

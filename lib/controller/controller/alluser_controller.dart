@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:trippbuddy/controller/controller/userprofile_controller.dart';
 import 'package:trippbuddy/controller/service/follo_service.dart';
 import 'package:trippbuddy/controller/service/serch_user_service.dart';
 import 'package:trippbuddy/model/allbuddys.dart';
@@ -11,10 +12,14 @@ class AllUsercontroll extends GetxController {
   List<Users>? allUsers;
   RxBool isLoding = true.obs;
   Future<List<Users>> getUsers() async {
+    // UserPostcontroll controller =     Get.find<UserPostcontroll>();
     try {
       var data = await AllUsersrService.getAllUsers();
       isLoding.value = false;
       print("${data}========tyy");
+    
+    //  controller.getUsersposts();
+
       return data;
 
 
@@ -30,10 +35,11 @@ class AllUsercontroll extends GetxController {
 
   
     Future <FollowModel?>putFollows({required String followId})async{
+//  UserPostcontroll controller =     Get.find<UserPostcontroll>();
     try {
       var data = await FollowService.putFollow(followId: followId);
       print("${data}=====data follow controll");
-    
+      // controller.getUsersposts();
       print(("follow controller======"),);
       return data;
    } catch (e) {

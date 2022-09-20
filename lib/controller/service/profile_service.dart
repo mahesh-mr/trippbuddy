@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:trippbuddy/controller/controller/myprofile_controller.dart';
 import 'package:trippbuddy/model/myprofile_modrl.dart';
 import 'package:trippbuddy/model/profile.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
@@ -36,12 +37,14 @@ class ProfileService {
   )async {
        String? token = TokenStorage.getUserIdAndToken("token"); 
           String? userId = TokenStorage.getUserIdAndToken("uId"); 
+          MyProfileController myProfileController =Get.find<MyProfileController>();
           try {
           
             var response =await DioClient.dio.put("/updateuser",data: {"userId":userId, "name":name}, options: Options(
         headers: {"Authorization": "Bearer $token"},
 
        ));
+         myProfileController.profile.value=(await myProfileController.getMyProfiles())!;
        Myprofile editmyprofile =myprofileFromJson(jsonEncode(response.data));
 
  Get.snackbar('Success', response.data['message'],
@@ -50,6 +53,7 @@ class ProfileService {
       print('tftftftdd' + response.statusMessage!);
 
       print('llllll' + editmyprofile.userData!.name.toString());
+    
       return editmyprofile;
     } on DioError catch (e) {
       print(e.error);
