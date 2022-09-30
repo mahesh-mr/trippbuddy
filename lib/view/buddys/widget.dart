@@ -13,7 +13,6 @@ class AddFriendProfile extends StatelessWidget {
   String name;
 
  AllUsercontroll allUsercontroll = Get.put(AllUsercontroll());
- // UserPostcontroll userpostcontroller = Get.find<UserPostcontroll>();
   @override
   Widget build(BuildContext context) {
     return Obx(

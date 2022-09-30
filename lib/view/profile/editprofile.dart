@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/controller/myprofile_controller.dart';
@@ -15,7 +17,7 @@ class EditProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     MyProfileController myprofileciontroller = Get.find<MyProfileController>();
     UserData myprofiles = myprofileciontroller.profile.value!.userData!;
-  nameController.text =  myprofile.userData!.name!;
+    nameController.text = myprofile.userData!.name!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: white1,
@@ -26,13 +28,35 @@ class EditProfile extends StatelessWidget {
               Get.back();
             },
             icon: Icon(
-              Icons.arrow_back,
+              Icons.close,
               color: black1,
             )),
         title: const Text(
           "Edit Profile",
           style: TextStyle(color: black1),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              String? userId = TokenStorage.getUserIdAndToken("uId");
+              bool? isValid = formKey.currentState!.validate();
+              print(isValid);
+              print("oldnameeeeeeeeeeeeeeeeeeeee");
+
+              if (isValid) {
+                myprofileciontroller.updateUserData(
+                    userId: myprofiles.id!, name: nameController.text);
+                Get.back();
+                // controller.
+
+              }
+            },
+            icon: Icon(
+              Icons.check,
+              color: blue1,
+            ),
+          ),
+        ],
       ),
       body: Obx(() {
         Myprofile? userdata = myprofileciontroller.profile.value;
@@ -84,25 +108,25 @@ class EditProfile extends StatelessWidget {
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                            //  style: ElevatedButton.styleFrom(maximumSize: Size(300, 40)),
-                            onPressed: () {
-                              String? userId =
-                                  TokenStorage.getUserIdAndToken("uId");
-                              bool? isValid = formKey.currentState!.validate();
-                              print(isValid);
-                              print("oldnameeeeeeeeeeeeeeeeeeeee");
+                        // ElevatedButton(
+                        //     //  style: ElevatedButton.styleFrom(maximumSize: Size(300, 40)),
+                        //     onPressed: () {
+                        //       String? userId =
+                        //           TokenStorage.getUserIdAndToken("uId");
+                        //       bool? isValid = formKey.currentState!.validate();
+                        //       print(isValid);
+                        //       print("oldnameeeeeeeeeeeeeeeeeeeee");
 
-                              if (isValid) {
-                                myprofileciontroller.updateUserData(
-                                    userId: myprofiles.id!,
-                                    name: nameController.text);
-                                Get.back();
-                                // controller.
+                        //       if (isValid) {
+                        //         myprofileciontroller.updateUserData(
+                        //             userId: myprofiles.id!,
+                        //             name: nameController.text);
+                        //         Get.back();
+                        //         // controller.
 
-                              }
-                            },
-                            child: const Text("Updated"))
+                        //       }
+                        //     },
+                        //     child: const Text("Updated"))
                       ],
                     ),
                   );

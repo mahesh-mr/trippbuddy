@@ -7,7 +7,7 @@ import 'package:trippbuddy/model/posatchat.dart';
 
 class PersonalChatController extends GetxController{
   //PersonalChat? personalchat;
-  List<PersonalChat>? personalchats;
+  RxList<PersonalChat>personalchats = <PersonalChat>[].obs;
   RxBool isloding=true.obs;
   String postId;
   PersonalChatController({required this.postId});
@@ -34,35 +34,35 @@ class PersonalChatController extends GetxController{
       isloding.value = false;
     }
   }
-  Future <List<PostChat>?>postChat({
-    required String chatId,required String content
-  })async{
-    try {
-      await PostChatService.postChats(chatId: chatId, content: content);
-      print("chattttwork=======");
+  // Future <List<PostChat>?>postChat({
+  //   required String chatId,required String content
+  // })async{
+  //   try {
+  //     await PostChatService.postChats(chatId: chatId, content: content);
+  //     print("chattttwork=======");
       
       
-     } on DioError catch(e){
-      print(e.error);
-      print(e.message);
-      print(e);
-        print("dio controll error===================");
-     }
+  //    } on DioError catch(e){
+  //     print(e.error);
+  //     print(e.message);
+  //     print(e);
+  //       print("dio controll error===================");
+  //    }
      
      
-     catch (e) {
-      print(e);
-      print("controll error===================");
-          Get.snackbar("sorry", "$e");
-        }
+  //    catch (e) {
+  //     print(e);
+  //     print("controll error===================");
+  //         Get.snackbar("sorry", "$e");
+  //       }
 
-      }
+  //     }
 
 
 
   @override
   void onInit() {
-  getPersonalchats().then((value) => personalchats=value);
+  getPersonalchats().then((value) => personalchats.value=value!);
     super.onInit();
   }
 }

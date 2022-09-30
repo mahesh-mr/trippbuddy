@@ -3,7 +3,7 @@ import 'package:trippbuddy/model/all_product.dart';
 import 'package:trippbuddy/controller/service/market_service.dart';
 
 class ProductControll extends GetxController{
-  List<Products>?allProducts;
+  RxList<Products>?allProducts=<Products>[].obs;
 
      RxBool loding =true.obs;
      Future<List<Products>?>getproductst()async{
@@ -26,7 +26,7 @@ class ProductControll extends GetxController{
      }
      @override
   void onInit() {
-    getproductst().then((value) => allProducts=value);
+    getproductst().then((value) => allProducts!=value);
     super.onInit();
   }
 

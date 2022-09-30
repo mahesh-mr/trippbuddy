@@ -23,7 +23,7 @@ class RecentChats {
     String? id;
     String chatName;
     bool isGroupChat;
-    List<User> users;
+    List<ChatUser> users;
     DateTime createdAt;
     DateTime? updatedAt;
    
@@ -33,7 +33,7 @@ class RecentChats {
         id: json["_id"],
         chatName: json["chatName"],
         isGroupChat: json["isGroupChat"],
-        users: List<User>.from(json["users"].map((x) => User.fromJson(x))),
+        users: List<ChatUser>.from(json["users"].map((x) => ChatUser.fromJson(x))),
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
      
@@ -124,8 +124,8 @@ class Sender {
     };
 }
 
-class User {
-    User({
+class ChatUser {
+    ChatUser({
     required      this.id,
      required     this.name,
        this.email,
@@ -145,7 +145,7 @@ class User {
     List<String>? following;
  
 
-    factory User.fromJson(Map<String, dynamic> json) => User(
+    factory ChatUser.fromJson(Map<String, dynamic> json) => ChatUser(
         id: json["_id"],
         name: json["name"],
         email: json["email"],

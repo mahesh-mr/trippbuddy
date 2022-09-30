@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/controller/allpost_controller.dart';
 import 'package:trippbuddy/controller/controller/mypost_controller.dart';
+import 'package:trippbuddy/controller/controller/userprofile_controller.dart';
 import 'package:trippbuddy/model/like.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/controller/service/Token/dio_clint.dart';
@@ -11,7 +12,8 @@ class LikeServise {
   static Future<Like?> putMyLike({required String postId}) async {
     String? token = TokenStorage.getUserIdAndToken("token");
     PostController postController = Get.find<PostController>();
-     MyPostController myPostController = Get.find<MyPostController>();
+    MyPostController myPostController = Get.find<MyPostController>();
+    //UserPostcontroll userPostcontroll = Get.lazyPut(()=>UserPostcontroll());
     try {
       var response = await DioClient.dio.put(
         "/like",
@@ -22,13 +24,17 @@ class LikeServise {
           },
         ),
       );
-
       Like like = likeFromJson(jsonEncode(response.data));
       print("called");
       print(response.data);
-
       postController.allPosts.value = (await postController.getPost())!;
-        myPostController.allMyPosts.value=(await myPostController.getallMyPosts())!;
+      myPostController.allMyPosts.value =
+          (await myPostController.getallMyPosts())!;
+
+      // userPostcontroll.singleuser.value =
+      //     (await userPostcontroll.getUsersposts())!;
+      // userPostcontroll.update();
+      myPostController.update();
 
       return like;
     } on DioError catch (e) {
@@ -43,7 +49,7 @@ class LikeServise {
 
   static Future<Like?> putMyUnlike({required String postId}) async {
     String? token = TokenStorage.getUserIdAndToken("token");
-    PostController postController = Get.find<PostController>();
+    PostController postController = Get.put(PostController());
     MyPostController myPostController = Get.find<MyPostController>();
     try {
       var response = await DioClient.dio.put(
@@ -56,7 +62,9 @@ class LikeServise {
       // Like like = likeFromJson(jsonEncode(response.data));
       print(response.data);
       postController.allPosts.value = (await postController.getPost())!;
-      myPostController.allMyPosts.value =(await myPostController.getallMyPosts())!;
+      myPostController.allMyPosts.value =
+          (await myPostController.getallMyPosts())!;
+      myPostController.update();
       // return like;
     } on DioError catch (e) {
       print("6656566565656556565");
@@ -65,11 +73,7 @@ class LikeServise {
     } catch (e) {
       print(e);
     }
-    
   }
-
-
-
 
 //  static Future<Like?> putLike({required String postId}) async {
 //     String? token = TokenStorage.getUserIdAndToken("token");
@@ -126,10 +130,7 @@ class LikeServise {
 //     } catch (e) {
 //       print(e);
 //     }
-    
+
 //   }
-
-
-
 
 }

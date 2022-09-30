@@ -1,9 +1,15 @@
 import 'package:get/get.dart';
+import 'package:trippbuddy/controller/service/createpost_service.dart';
 import 'package:trippbuddy/controller/service/like_service.dart';
 import 'package:trippbuddy/model/delete_cmt_model.dart';
+
+
+import 'package:trippbuddy/model/delete_post_model.dart';
 import 'package:trippbuddy/model/post_model.dart';
 import 'package:trippbuddy/controller/service/comments_service.dart';
 import 'package:trippbuddy/controller/service/allpost_service.dart';
+import 'package:trippbuddy/model/delete_post_model.dart';
+
 
 import '../../model/like.dart';
 
@@ -66,6 +72,8 @@ class PostController extends GetxController {
       Get.snackbar("sorry", "$e");
     }
   }
+
+
 
   @override
   void onInit() {

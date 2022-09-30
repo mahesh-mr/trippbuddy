@@ -55,7 +55,7 @@ class CommntService {
         jsonEncode(response.data),
       );
       print(response.data);
-        postController.allPosts.value = (await postController.getPost())!;
+      postController.allPosts.value = (await postController.getPost())!;
       return cntModel;
     } on DioError catch (e) {
       print(e.response!.data);

@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
+import 'package:trippbuddy/controller/service/createpost_service.dart';
 import 'package:trippbuddy/controller/service/like_service.dart';
 import 'package:trippbuddy/controller/service/updatepost.dart';
+import 'package:trippbuddy/model/delete_post_model.dart';
 import 'package:trippbuddy/model/editpost_model.dart';
 import 'package:trippbuddy/model/like.dart';
 import 'package:trippbuddy/model/mypost.dart';
 import 'package:trippbuddy/controller/service/mypost_service.dart';
+
 
 class MyPostController extends GetxController {
   RxList<Myposts> allMyPosts = <Myposts>[].obs;
@@ -41,7 +46,7 @@ class MyPostController extends GetxController {
 
   Future<Like?> putUnlikes({required String postId}) async {
     try {
-      await LikeServise.putMyLike(postId: postId);
+      await LikeServise.putMyUnlike(postId: postId);
       // islike.value==false;
 
       print("unliked-------------------");
@@ -71,4 +76,15 @@ class MyPostController extends GetxController {
     getallMyPosts().then((value) => allMyPosts.value = value!);
     super.onInit();
   }
+ Future<DeletePostModel?>deletePost({required String postId})async{
+  try {
+    await CreatePostService.deletePost(postId:postId );
+    print("delete controll");
+   } catch (e) {
+      Get.snackbar("sorry", "$e");
+    }
+  }
+
+
+ 
 }

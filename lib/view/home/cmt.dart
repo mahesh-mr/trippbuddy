@@ -77,7 +77,7 @@ class MyComments extends StatelessWidget {
           ),
         ),
       ),
-      body: Stack(
+      body: Column(
         children: [
           Obx(() {
             if (postController.loding.value) {
@@ -85,75 +85,160 @@ class MyComments extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
-            return ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: postController.allPosts[cindex].comments!.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              itemBuilder: (context, index) {
-                final posts = postController.allPosts[cindex].comments![index];
-                return ListTile(
-                  leading: images(posts),
-                  title: TextLines(title: posts.postedBy!.name!, size: 18),
-                  subtitle: TextLines(title: posts.text ?? "poli", size: 18),
-                  trailing: posts.postedBy!.sId == userid
-                      ? IconButton(
-                          onPressed: () {
-                            postController.deleteCmt(
-                                postId: postController.allPosts[cindex].sId!,
-                                commentId: posts.sId!);
-                          },
-                          icon: Icon(
-                            Icons.delete,
-                            color: black1,
-                          ))
-                      : null,
-                );
-              },
-            );
-          }),
-          GetBuilder<PostController>(dispose: (_) {
-            _commetController.dispose();
-          }, builder: (controller) {
-            return Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                height: 60,
-                width: double.infinity,
-                color: Colors.white,
-                child: Form(
-                  key: formkey,
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            posts.comments![cindex].postedBy!.pic!),
-                      ),
-                      SizedBox(
-                        width: width * .02,
-                      ),
-                      cmtFeld(),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      submitButton(context),
-                    ],
-                  ),
-                ),
+            return Expanded(
+              child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: postController.allPosts[cindex].comments!.length,
+                shrinkWrap: true,
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                itemBuilder: (context, index) {
+                  final posts = postController.allPosts[cindex].comments![index];
+                  return ListTile(
+                    leading: images(posts),
+                    title: TextLines(title: posts.postedBy!.name!, size: 18),
+                    subtitle: TextLines(title: posts.text ?? "poli", size: 18),
+                    trailing: posts.postedBy!.sId == userid
+                        ? IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Do you Want Delete?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Cancel"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          postController.deleteCmt(
+                                              postId: postController
+                                                  .allPosts[cindex].sId!,
+                                              commentId: posts.sId!);
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          "Delete",
+                                          style: TextStyle(
+                                            color: red1,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: black1,
+                            ))
+                        : null,
+                  );
+                },
               ),
             );
           }),
+          Container(
+      padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
+      height: 60,
+      width: double.infinity,
+      color: Colors.white,
+      child: Form(
+        key: formkey,
+        child: Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: _commetController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "minimum  1 length";
+                  } else if (!RegExp(r'(^[a-z A-Z]+$)').hasMatch(value)) {
+                    return 'Please enter a valid Location';
+                  } else {
+                    return null;
+                  }
+                },
+                decoration: const InputDecoration(
+                    hintText: "Write message...",
+                    hintStyle: const TextStyle(color: Colors.black54),
+                    border: InputBorder.none),
+              ),
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+            FloatingActionButton(
+              onPressed: () {
+               Posts post = postController.allPosts[cindex];
+        bool lsvalid = formkey.currentState!.validate();
+        if (lsvalid) {
+          postController.putMycomments(
+              postId: post.sId!, text: _commetController.text);
+          _commetController.clear();
+        }
+      },
+              child: const Icon(
+                Icons.send,
+                color: Colors.white,
+                size: 18,
+              ),
+              backgroundColor: Colors.blue,
+              elevation: 0,
+            ),
+          ],
+        ),
+      ),
+    )
+
+
+          // GetBuilder<PostController>(dispose: (_) {
+          //   _commetController.dispose();
+          // }, builder: (controller) {
+          //   return Align(
+          //     alignment: Alignment.bottomLeft,
+          //     child: Container(
+          //       padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+          //       height: 60,
+          //       width: double.infinity,
+          //       color: Colors.white,
+          //       child: Form(
+          //         key: formkey,
+          //         child: Row(
+          //           children: [
+          //             CircleAvatar(
+          //               backgroundImage: NetworkImage(
+          //                   posts.comments![cindex].postedBy!.pic!),
+          //             ),
+          //             SizedBox(
+          //               width: width * .02,
+          //             ),
+          //             cmtFeld(),
+          //             SizedBox(
+          //               width: 15,
+          //             ),
+          //             submitButton(context),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   );
+          // }),
         ],
       ),
     );
   }
+
 //==================images====================================
   CircleAvatar images(Comments posts) {
     return CircleAvatar(
-                  backgroundImage: NetworkImage(posts.postedBy!.pic ??
-                      "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=170667a&w=0&h=kEAA35Eaz8k8A3qAGkuY8OZxpfvn9653gDjQwDHZGPE="),
-                );
+      backgroundImage: NetworkImage(posts.postedBy!.pic ??
+          "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=170667a&w=0&h=kEAA35Eaz8k8A3qAGkuY8OZxpfvn9653gDjQwDHZGPE="),
+    );
   }
 
 //===================submitButton=======================================
@@ -165,8 +250,7 @@ class MyComments extends StatelessWidget {
         if (lsvalid) {
           postController.putMycomments(
               postId: post.sId!, text: _commetController.text);
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('Processing Data')));
+          _commetController.clear();
         }
       },
       child: Icon(

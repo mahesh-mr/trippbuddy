@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/controller/allpost_controller.dart';
+import 'package:trippbuddy/controller/controller/mypost_controller.dart';
 import 'package:trippbuddy/model/post_model.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
+import 'package:trippbuddy/view/Scereen_Home/tabview.dart';
 import 'package:trippbuddy/view/core/color/colors.dart';
 import 'package:trippbuddy/view/home/createpost.dart';
 import 'package:trippbuddy/view/home/cmt.dart';
@@ -13,15 +15,18 @@ import 'package:trippbuddy/view/widgets/text.dart';
 
 class NewFeid extends StatelessWidget {
   NewFeid({Key? key}) : super(key: key);
-  PostController postController = Get.put(PostController());
 
   String? userId = TokenStorage.getUserIdAndToken("uId");
 
   @override
   Widget build(BuildContext context) {
+    PostController postController = Get.put(PostController());
+     Get.put(MyPostController());
+     postController.onInit();
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -52,16 +57,12 @@ class NewFeid extends StatelessWidget {
                 itemBuilder: (BuildContext context, index) {
                   Posts posts = postController.allPosts[index];
 
-                  DateTime date = DateTime.parse(posts.createdAt!);
-                  var dd = date.day;
-                  var mm = date.month;
-                  var hh = date.hour;
-                  var mi = date.minute;
+                
                   bool isLiked =
                       posts.likes!.any((element) => element == userId);
-                        print("${posts.likes!}=====================");
-                      print("${userId}--------------");
-                      print("${isLiked}========909090");
+                  print("${posts.likes!}=====================");
+                  print("${userId}--------------");
+                  print("${isLiked}========909090");
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -72,10 +73,15 @@ class NewFeid extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(
-                                radius: width * .07,
-                                backgroundImage:
-                                    NetworkImage(posts.postedBy!.pic!),
+                              GestureDetector(
+                                onTap: (){
+                                  posts.postedBy!.sId==userId? Get.to(TabView()):null;
+                                },
+                                child: CircleAvatar(
+                                  radius: width * .07,
+                                  backgroundImage:
+                                      NetworkImage(posts.postedBy!.pic!),
+                                ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(left: width * .03),

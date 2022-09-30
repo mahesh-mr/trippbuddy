@@ -9,6 +9,7 @@ import 'package:trippbuddy/model/mypost.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/view/core/color/colors.dart';
 import 'package:trippbuddy/view/core/font/font.dart';
+import 'package:trippbuddy/view/home/cmt.dart';
 import 'package:trippbuddy/view/profile/updatepost.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
@@ -20,6 +21,7 @@ class ViewPost extends StatelessWidget {
   PostController postController = Get.put(PostController());
 
   String? userId = TokenStorage.getUserIdAndToken("uId");
+  
 
   @override
   Widget build(BuildContext context) {
@@ -135,16 +137,18 @@ class ViewPost extends StatelessWidget {
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  IconButton(
-                                    onPressed: () {
-                                      //    UpdatedPost(editindex: index);
-                                    },
-                                    icon: Icon(
-                                      CupertinoIcons.quote_bubble,
-                                      size: 30,
-                                      color: blue1,
-                                    ),
-                                  ),
+                                   GestureDetector(
+                                onTap: () {
+                                  Get.to(
+                                    MyComments(cindex: index),
+                                  );
+                                },
+                                child: const Icon(
+                                  CupertinoIcons.chat_bubble,
+                                  size: 30,
+                                  color: blue1,
+                                ),
+                              ),
                                 ],
                               ),
                               TextLines(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:trippbuddy/controller/controller/allpost_controller.dart';
 import 'package:trippbuddy/controller/controller/myprofile_controller.dart';
 import 'package:trippbuddy/model/myprofile_modrl.dart';
 import 'package:trippbuddy/model/profile.dart';
@@ -38,6 +39,9 @@ class ProfileService {
        String? token = TokenStorage.getUserIdAndToken("token"); 
           String? userId = TokenStorage.getUserIdAndToken("uId"); 
           MyProfileController myProfileController =Get.find<MyProfileController>();
+           PostController postController = Get.find<PostController>();
+
+
           try {
           
             var response =await DioClient.dio.put("/updateuser",data: {"userId":userId, "name":name}, options: Options(
@@ -45,6 +49,7 @@ class ProfileService {
 
        ));
          myProfileController.profile.value=(await myProfileController.getMyProfiles())!;
+         postController.allPosts.value=(await postController.getPost())!;
        Myprofile editmyprofile =myprofileFromJson(jsonEncode(response.data));
 
  Get.snackbar('Success', response.data['message'],

@@ -13,6 +13,7 @@ class FrendsList extends StatelessWidget {
   }) : super(key: key);
 
   AllUsercontroll allUsercontroller = Get.put(AllUsercontroll());
+  TextEditingController searchController = TextEditingController();
   // UserPostcontroll userpostcontroller = Get.put(UserPostcontroll());
 
   @override
@@ -28,162 +29,139 @@ class FrendsList extends StatelessWidget {
                   child: const CircularProgressIndicator(),
                 );
               }
-              if (allUsercontroller.allUsers!.isEmpty) {
-                const Center(
-                  child: const Text("data"),
-                );
-              }
-              return ListView(
-                children: [
-                  GestureDetector(
-                    onTap: (){
- 
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Color.fromARGB(255, 232, 227, 227),
-                      ),child: Row(children: [
-                        Icon(Icons.search),
-                        SizedBox(width: 10,),
-                        Text("Search...."),
-                      ],),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Expanded(
-                    child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 2 / 4,
-                          mainAxisExtent: 200,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 5),
-                      itemBuilder: (context, index) {
-                        String? userId = TokenStorage.getUserIdAndToken("uId");
-                        Users userDetails = allUsercontroller.allUsers![index];
-                        
-                        return InkWell(
-                          onTap: () {
-                                 bool followed = userDetails.followers!
-                            .any((element) => element.sId == userId);
+              // if (allUsercontroller.allUsers!.isEmpty) {
+              //   const Center(
+              //     child: const Text("data"),
+              //   );
+              // }
+              return GetBuilder<AllUsercontroll>(builder: (controller) {
+                print(controller.searchText);
 
-                            print("${followed} dlfkklf");
-                            print(userId);
-                            print(userDetails.followers!.map((e) => e.sId));
-                            Get.to(
-                              FriendProfile(
-                                  id: index, userDetails: userDetails,followed: followed),
-                            );
+                List<Users> seachedUsers = allUsercontroller.allUsers!
+                    .where((element) => element.name!
+                        .toLowerCase()
+                        .contains(controller.searchText.toLowerCase()))
+                    .toList();
+
+                return Column(
+                  // shrinkWrap: true,
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 16, left: 16, right: 16),
+                        child: TextField(
+                          controller: searchController,
+                          onChanged: (value) {
+                            controller.onchangeSearchText(value);
                           },
-                          child: Container(
-                            height: 200,
-                            //  color: white1,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                                border: Border.all(color: Colors.blueAccent)),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                      allUsercontroller.allUsers![index].pic!,
-                                    ),
-                                    radius: 45,
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text(
-                                    allUsercontroller.allUsers![index].name!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
+                          decoration: InputDecoration(
+                            hintText: "Search...",
+                            hintStyle: TextStyle(color: Colors.grey.shade600),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.grey.shade600,
+                              size: 20,
                             ),
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
+                            contentPadding: EdgeInsets.all(8),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade100)),
                           ),
-                        );
-                        // );
-                      },
-                      itemCount: allUsercontroller.allUsers!.length,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              );
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Builder(builder: (context) {
+                      if (seachedUsers.isEmpty) {
+                        return Center(
+                          child: Text("No Data"),
+                        );
+                      }
+
+                      return Expanded(
+                        child: GridView.builder(
+                          // physics: NeverScrollableScrollPhysics(),
+                          // shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 2 / 4,
+                                  mainAxisExtent: 200,
+                                  crossAxisSpacing: 5,
+                                  mainAxisSpacing: 5),
+                          itemBuilder: (context, index) {
+                            String? userId =
+                                TokenStorage.getUserIdAndToken("uId");
+                            Users userDetails = seachedUsers[index];
+
+                            String pic = seachedUsers[index].pic!;
+
+                            return InkWell(
+                              onTap: () {
+                                bool followed = userDetails.followers!
+                                    .any((element) => element.sId == userId);
+
+                                print("${followed} dlfkklf");
+                                print(userId);
+                                print(userDetails.followers!.map((e) => e.sId));
+                                Get.to(
+                                  FriendProfile(
+                                      id: index,
+                                      userDetails: userDetails,
+                                      followed: followed),
+                                );
+                              },
+                              child: Container(
+                                height: 200,
+                                //  color: white1,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7),
+                                    border:
+                                        Border.all(color: Colors.blueAccent)),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                          pic == "pic"
+                                              ? "https://www.kindpng.com/picc/m/22-223863_no-avatar-png-circle-transparent-png.png"
+                                              : pic,
+                                        ),
+                                        radius: 45,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        seachedUsers[index].name!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                            // );
+                          },
+                          itemCount: seachedUsers.length,
+                        ),
+                      );
+                    }),
+                  ],
+                );
+              });
             },
           )),
     );
-
   }
 }
-// class CustomSearchDelegate extends SearchDelegate {
-//   @override
-//   List<Widget> buildActions(BuildContext context) {
-//   return [
-//      IconButton(
-//         color: Colors.white,
-//         onPressed: () {
-//           if (query.isEmpty) {
-//             close(context, null);
-//           } else {
-//             query = '';
-//           }
-//         },
-//         icon: const Icon(
-//           Icons.clear,
-//         ),
-//       )
-//     ];
-//   }
-
-//   @override
-//   Widget buildLeading(BuildContext context) {
-//      return Column(
-//       children: [
-//         IconButton(
-//           onPressed: () {
-//             close(context, null);
-//           },
-//           icon: Icon(
-//             Icons.arrow_back,
-//             color: Colors.white,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-//   @override
-//   Widget buildResults(BuildContext context) {
-//   return Center(
-//       child: Text(
-//         query,
-//         style: const TextStyle(
-//           color: Colors.white,
-//         ),
-//       ),
-//     );
-//   }
-
-//   @override
-//   Widget buildSuggestions(BuildContext context) {
-  
-//     return Center(
-//       child: Text(
-//         query,
-//         style: const TextStyle(
-//           color: Colors.white,
-//         ),
-//       ),
-//     );
-//   }
-// }

@@ -7,8 +7,10 @@ import 'package:trippbuddy/controller/controller/alluser_controller.dart';
 import 'package:trippbuddy/controller/controller/userprofile_controller.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/model/allbuddys.dart';
+import 'package:trippbuddy/model/userpost.dart';
 import 'package:trippbuddy/view/core/color/colors.dart';
 import 'package:trippbuddy/view/core/font/font.dart';
+import 'package:trippbuddy/view/home/cmt.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 // ignore: must_be_immutable
@@ -35,17 +37,7 @@ class FriendProfile extends StatelessWidget {
     AllUsercontroll allUsercontroll = Get.put(AllUsercontroll());
     return Scaffold(
         backgroundColor: white1,
-        body:
-            // bool followed =
-            //     userDetails.followers!.any((element) => element.sId == userId);
-            // print("${followed}=====follow/unfollow");
-            // if (userpostcontroller.isLoding.value) {
-            //   return const Center(
-            //     child: CircularProgressIndicator(),
-            //   );
-            // }
-
-            DefaultTabController(
+        body: DefaultTabController(
           length: 3,
           child: NestedScrollView(
             headerSliverBuilder: (context, index) {
@@ -86,10 +78,13 @@ class FriendProfile extends StatelessWidget {
                                   child: GetBuilder<UserPostcontroll>(
                                       builder: (controller) {
                                     return ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: controller.followed
+                                              ? green2
+                                              : red1),
+
                                       // style: ButtonStyle(shape: OutlinedBorder(side: )),
                                       onPressed: () {
-                                       controller.followAndUnfollow();
-
                                         if (controller.followed) {
                                           print("{followed}=======after");
 
@@ -104,6 +99,8 @@ class FriendProfile extends StatelessWidget {
                                           allUsercontroll.putFollows(
                                               followId: userDetails.sId!);
                                         }
+                                        controller.followAndUnfollow();
+
                                         controller.getUsersposts();
                                       },
                                       child: Text(controller.followed
@@ -132,9 +129,7 @@ class FriendProfile extends StatelessWidget {
                     tabs: [
                       Obx(() {
                         if (userpostcontroller.isLoding.value) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return SizedBox();
                         }
                         return Tab(
                             text: userpostcontroller
@@ -160,16 +155,14 @@ class FriendProfile extends StatelessWidget {
             },
             body: TabBarView(
               children: [
-                Obx(
-                   () {
-                    if (userpostcontroller.isLoding.value) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-                    return AddFriendPosts();
+                Obx(() {
+                  if (userpostcontroller.isLoding.value) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
-                ),
+                  return AddFriendPosts();
+                }),
                 Following(userDetails: userDetails),
                 Follower(userDetails: userDetails),
               ],
@@ -211,6 +204,7 @@ class FriendProfile extends StatelessWidget {
                       size: 20,
                       fontfamly: logbtn,
                       fw: FontWeight.w900),
+
                   // SizedBox(height: 40,),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
@@ -297,7 +291,7 @@ class Follower extends StatelessWidget {
   }
 }
 
-//followers========================================================================================================
+//following========================================================================================================
 class Following extends StatelessWidget {
   Following({
     Key? key,
@@ -366,6 +360,8 @@ class AddFriendPosts extends StatelessWidget {
   AddFriendPosts({Key? key}) : super(key: key);
   UserPostcontroll userpostcontroller = Get.find<UserPostcontroll>();
 
+  String? userId = TokenStorage.getUserIdAndToken("uId");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -386,6 +382,12 @@ class AddFriendPosts extends StatelessWidget {
               shrinkWrap: true,
               itemCount: userpostcontroller.singleuser.value!.posts!.length,
               itemBuilder: (BuildContext context, index) {
+                Postd postd =
+                    userpostcontroller.singleuser.value!.posts![index];
+                bool isLikes = postd.likes!.any((element) => element == userId);
+                print("${isLikes}==------------===============------------");
+                print("${postd.likes}=========------============");
+                print("${userId}--------------");
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -411,26 +413,47 @@ class AddFriendPosts extends StatelessWidget {
                               fontfamly: headline,
                               color: const Color.fromARGB(255, 104, 101, 101),
                               fw: FontWeight.bold),
-                          Row(
-                            children: const [
-                              Icon(
-                                CupertinoIcons.heart,
-                                size: 30,
-                                color: blue1,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Icon(
-                                CupertinoIcons.quote_bubble,
-                                size: 30,
-                                color: blue1,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   children: [
+                          //     IconButton(
+                          //       onPressed: () {
+                          //         if (isLikes) {
+                          //           userpostcontroller.putUnlikes(
+                          //             postId: postd.id!,
+                          //           );
+                          //         } else {
+                          //           userpostcontroller.putLikes(
+                          //             postId: postd.id!,
+                          //           );
+                          //         }
+                          //         print(postd.id);
+                          //         print(userId);
+                          //       },
+                          //       icon: Icon(
+                          //         isLikes
+                          //             ? Icons.favorite
+                          //             : CupertinoIcons.heart,
+                          //         size: 30,
+                          //         color: isLikes ? red1 : blue1,
+                          //       ),
+                          //     ),
+                          //     SizedBox(
+                          //       width: 10,
+                          //     ),
+                          //     GestureDetector(
+                          //       onTap: () {
+                          //         Get.to(
+                          //           MyComments(cindex: index),
+                          //         );
+                          //       },
+                          //       child: const Icon(
+                          //         CupertinoIcons.chat_bubble,
+                          //         size: 30,
+                          //         color: blue1,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

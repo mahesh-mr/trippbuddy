@@ -1,19 +1,22 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
+import 'package:trippbuddy/controller/controller/allpost_controller.dart';
+import 'package:trippbuddy/controller/controller/mypost_controller.dart';
 import 'package:trippbuddy/model/createpost.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/controller/service/Token/dio_clint.dart';
-import 'package:trippbuddy/model/editpost.dart';
-import 'package:trippbuddy/model/editpost_model.dart';
-import 'package:trippbuddy/view/core/color/colors.dart';
+
+import 'package:trippbuddy/model/delete_post_model.dart';
+
+
 
 class CreatePostService {
   static Future<List<NewCreatePost>> createPost(
       {required String title, required String avathar}) async {
     String? token = TokenStorage.getUserIdAndToken("token");
+     PostController postController = Get.find<PostController>();
+
 
     try {
       var respose = await DioClient.dio.post(
@@ -28,6 +31,9 @@ class CreatePostService {
       );
       List<NewCreatePost> createpost =
           newcreatePostFromJson(jsonEncode(respose.data));
+           postController.allPosts.value = (await postController.getPost())!;
+           postController.update();
+     //   myPostController.allMyPosts.value=(await myPostController.getallMyPosts())!;
       return createpost;
     } on DioError catch (e) {
       print(e.error);
@@ -52,5 +58,32 @@ class CreatePostService {
     } catch (e) {
       return [];
     }
+  }
+
+  static Future<DeletePostModel?>deletePost({
+    required String postId,
+  }) async{
+
+     String? token = TokenStorage.getUserIdAndToken("token");
+    PostController postController = Get.find<PostController>();
+    try {
+      var response = await DioClient.dio.delete('/deletepost/$postId',data: {
+        "posrId":postId
+      },  options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      DeletePostModel deletePost = deletePostModelFromJson(jsonEncode(response.data));
+      print(response.data);
+        postController.allPosts.value = (await postController.getPost())!;
+        return deletePost;
+     } on DioError catch (e) {
+      print(e.response!.data);
+      print(e.error);
+      print(e.message);
+    }
+    return null;
   }
   }

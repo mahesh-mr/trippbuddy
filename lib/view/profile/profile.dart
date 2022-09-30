@@ -14,7 +14,7 @@ import 'package:trippbuddy/view/core/font/font.dart';
 import 'package:trippbuddy/view/auth/log.dart';
 import 'package:trippbuddy/view/profile/editprofile.dart';
 import 'package:trippbuddy/view/profile/view_post.dart';
-import 'package:trippbuddy/view/updatepassword/updatepassword.dart';
+
 import 'package:trippbuddy/view/widgets/text.dart';
 
 class Profile extends StatelessWidget {
@@ -26,13 +26,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     MyPostController myPostController = Get.put(MyPostController());
     MyProfileController myrofileciontroller = Get.put(MyProfileController());
-    SignUpController signUpController = Get.put(SignUpController());
-    final formKey = GlobalKey<FormState>();
-    TextEditingController _passwordController = TextEditingController();
-    TextEditingController confirmPasswordController = TextEditingController();
-    String? userid = TokenStorage.getUserIdAndToken("uId");
-
-    //myPostController.onInit();
+    myrofileciontroller.onInit();
 
     return Scaffold(
       body: DefaultTabController(
@@ -47,13 +41,16 @@ class Profile extends StatelessWidget {
                 child: SizedBox(
                   height: 200,
                   child: Obx(() {
-                    Myprofile? mprofile2 = myrofileciontroller.profile.value;
+                    // Myprofile? mprofile2 = myrofileciontroller.profile.value;
 
-                    if (mprofile2 == null) {
+                    if (myrofileciontroller.profile.value?.userData == null) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
+
+                    Myprofile? mprofile2 = myrofileciontroller.profile.value;
+
                     return Column(
                       children: [
                         Padding(
@@ -70,9 +67,10 @@ class Profile extends StatelessWidget {
                                             ListTile(
                                               onTap: () {
                                                 Get.to(EditProfile(
-                                                  myprofile: mprofile2,
-                                                ))?.then((value) =>   Navigator.pop(context));
-                                                //    Get.back();
+                                                  myprofile: mprofile2!,
+                                                ))!
+                                                    .then(
+                                                        (value) => Get.back());
                                               },
                                               leading: Icon(Icons.edit),
                                               title: Text("Edit Profile"),
@@ -185,7 +183,7 @@ class Profile extends StatelessWidget {
                                             //           ),
                                             //         );
                                             //       },
-                                            //       ).then((value) =>   Navigator.pop(context));
+                                            //     );
                                             //   },
                                             //   leading: Icon(Icons.lock),
                                             //   title: Text("Edit Password"),
@@ -215,7 +213,7 @@ class Profile extends StatelessWidget {
                               padding: const EdgeInsets.only(left: 10, top: 20),
                               child: CircleAvatar(
                                 backgroundImage:
-                                    NetworkImage(mprofile2.userData!.pic!),
+                                    NetworkImage(mprofile2!.userData!.pic!),
                                 radius: 60,
                               ),
                             ),
@@ -261,30 +259,30 @@ class Profile extends StatelessWidget {
                       text: "${myPostController.allMyPosts.length} Posts",
                     ),
                     Obx(() {
-                      Myprofile? mprofile = myrofileciontroller.profile.value;
-
-                      if (mprofile == null) {
+                      if (myrofileciontroller.profile.value!.userData == null) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
+
+                      Myprofile? mprofile = myrofileciontroller.profile.value;
 
                       return Tab(
                         text:
-                            "${mprofile.userData!.followers!.length.toString()} Followers",
+                            "${mprofile!.userData!.followers!.length.toString()} Followers",
                       );
                     }),
                     Obx(() {
-                      Myprofile? mprofile = myrofileciontroller.profile.value;
-
-                      if (mprofile == null) {
+                      if (myrofileciontroller.profile.value!.userData == null) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
+                      Myprofile? mprofile = myrofileciontroller.profile.value;
+
                       return Tab(
                           text:
-                              "${mprofile.userData!.following!.length.toString()} Following");
+                              "${mprofile!.userData!.following!.length.toString()} Following");
                     }),
                   ],
                 ),
@@ -296,25 +294,66 @@ class Profile extends StatelessWidget {
               myPost(myPostController),
 
               Obx(() {
-                Myprofile? mprofile = myrofileciontroller.profile.value;
-
-                if (mprofile == null) {
+                if (myrofileciontroller.profile.value == null) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
+
+                Myprofile? mprofile = myrofileciontroller.profile.value;
                 return myFollowers(myrofileciontroller);
               }),
               //   followers(myrofileciontroller),
               Obx(() {
-                Myprofile? mprofile = myrofileciontroller.profile.value;
-
-                if (mprofile == null) {
+                if (myrofileciontroller.profile.value == null) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-                return followings(myrofileciontroller);
+                Myprofile? mprofile = myrofileciontroller.profile.value;
+
+                return Obx(() {
+                  if (myrofileciontroller.profile.value == null) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  Myprofile? mprofile2 = myrofileciontroller.profile.value;
+
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: mprofile2!.userData!.following!.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: ListTile(
+                            //      onTap: ontap,
+                            leading: SizedBox(
+                              height: 70,
+                              width: 70,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: SizedBox.fromSize(
+                                    size: const Size.fromRadius(10),
+                                    child: Image.network(
+                                        mprofile2
+                                            .userData!.following![index].pic!,
+                                        fit: BoxFit.cover,
+                                        colorBlendMode: BlendMode.lighten),
+                                  )),
+                            ),
+                            title: Text(
+                              mprofile2.userData!.following![index].name!,
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            // trailing: trailing,
+                          ),
+                        );
+                      });
+                });
               }),
             ],
           ),
@@ -325,17 +364,18 @@ class Profile extends StatelessWidget {
 
   Obx myFollowers(MyProfileController myrofileciontroller) {
     return Obx(() {
-      Myprofile? mprofile = myrofileciontroller.profile.value;
-
-      if (mprofile == null) {
+      if (myrofileciontroller.profile.value == null) {
         return const Center(
           child: CircularProgressIndicator(),
         );
       }
+
+      Myprofile? mprofile = myrofileciontroller.profile.value;
+
       return ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: mprofile.userData!.followers!.length,
+          itemCount: mprofile!.userData!.followers!.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 5),
@@ -374,17 +414,17 @@ class Profile extends StatelessWidget {
 
   Obx followings(MyProfileController myProfileController) {
     return Obx(() {
-      Myprofile? mprofile = myProfileController.profile.value;
-
-      if (mprofile == null) {
+      if (myProfileController.profile.value == null) {
         return const Center(
           child: CircularProgressIndicator(),
         );
       }
+      Myprofile? mprofile = myProfileController.profile.value;
+
       return ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: mprofile.userData!.following!.length,
+          itemCount: mprofile!.userData!.following!.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 5),
@@ -422,7 +462,7 @@ class Profile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Obx(
         () {
-          ScrollController scrollController = ScrollController();
+          // ScrollController scrollController = ScrollController();
           if (myPostController.loding.value) {
             return const Center(
               child: const CircularProgressIndicator(),

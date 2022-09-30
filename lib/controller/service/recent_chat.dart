@@ -16,8 +16,7 @@ class RecentChatService {
           headers: {"Authorization": "Bearer $token"},
         ),
       );
-      print("my chats=======");
-
+     
       List<RecentChats> recentChats =
           recentChatsFromJson(jsonEncode(response.data));
       print(recentChats);
