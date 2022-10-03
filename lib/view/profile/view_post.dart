@@ -17,14 +17,20 @@ import 'package:trippbuddy/view/widgets/text.dart';
 class ViewPost extends StatelessWidget {
   ViewPost({Key? key, required this.mypostViewInx}) : super(key: key);
   int mypostViewInx;
-  MyPostController myPostController = Get.put(MyPostController());
-  PostController postController = Get.put(PostController());
+
 
   String? userId = TokenStorage.getUserIdAndToken("uId");
-  
-
+ 
   @override
   Widget build(BuildContext context) {
+     MyPostController myPostController = Get.put(MyPostController());
+     myPostController.onInit();
+ 
+  PostController postController = Get.find<PostController>();
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -82,91 +88,123 @@ class ViewPost extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 10, right: 10),
+                              child: Row(
                                 children: [
-                                  TextLines(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: TextLines(
                                       title: posts.title!,
-                                      size: 18,
-                                      fontfamly: headline,
-                                      color: const Color.fromARGB(
-                                          255, 104, 101, 101),
-                                      fw: FontWeight.bold),
-                                  const Spacer(),
-                                  IconButton(
-                                    onPressed: () {
-                                      Get.to(UpdatedPost(editindex: index));
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      size: 30,
-                                      color: blue1,
+                                      size: width * .04,
+                                      color: black1,
+                                      fw: FontWeight.bold,
                                     ),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      if (isLiked) {
-                                        myPostController.putUnlikes(
-                                          postId: posts.sId!,
-                                        );
-                                      } else {
-                                        myPostController.putLikes(
-                                          postId: posts.sId!,
-                                        );
-                                      }
-                                      print(posts.sId);
-                                      print(userId);
+                                  ),
+                                  // TextLines(
+                                  //     title: posts.title!,
+                                  //     size: 18,
+                                  //     fontfamly: headline,
+                                  //     color: const Color.fromARGB(
+                                  //         255, 104, 101, 101),
+                                  //     fw: FontWeight.bold),
+                                  const Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      myPostController.deletePost(
+                                          postId: myPostController
+                                              .allMyPosts[index].sId!);
+                                      Navigator.pop(context);
                                     },
-                                    icon: Icon(
-                                      isLiked
-                                          ? Icons.favorite
-                                          : CupertinoIcons.heart,
-                                      size: 30,
-                                      color: isLiked ? red1 : blue1,
+                                    child: Icon(
+                                      Icons.delete,
+                                      // size: 30,
+                                      color: black1,
                                     ),
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                   GestureDetector(
-                                onTap: () {
-                                  Get.to(
-                                    MyComments(cindex: index),
-                                  );
-                                },
-                                child: const Icon(
-                                  CupertinoIcons.chat_bubble,
-                                  size: 30,
-                                  color: blue1,
-                                ),
-                              ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(UpdatedPost(editindex: index));
+                                    },
+                                    child: Icon(
+                                      Icons.edit,
+                                      //  size: 30,
+                                      color: black1,
+                                    ),
+                                  ),
                                 ],
                               ),
-                              TextLines(
-                                title: "${posts.likes!.length} Like",
-                                size: 18,
-                                fontfamly: headline,
-                                fw: FontWeight.bold,
-                                color: blue1,
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    if (isLiked) {
+                                      myPostController.putUnlikes(
+                                        postId: posts.sId!,
+                                      );
+                                    } else {
+                                      myPostController.putLikes(
+                                        postId: posts.sId!,
+                                      );
+                                    }
+                                    print(posts.sId);
+                                    print(userId);
+                                  },
+                                  icon: Icon(
+                                    isLiked
+                                        ? Icons.favorite
+                                        : CupertinoIcons.heart,
+                                    size: 30,
+                                    color: isLiked ? red1 : blue1,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(
+                                      MyComments(cindex: index),
+                                    );
+                                  },
+                                  child: const Icon(
+                                    CupertinoIcons.chat_bubble,
+                                    size: 30,
+                                    color: blue1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 10,
                               ),
-                              TextLines(
-                                title: "${posts.comments!.length} comments",
-                                size: 18,
-                                fontfamly: headline,
+                              child: TextLines(
+                                title: "${posts.likes!.length} Likes",
+                                size: 14,
+                                color: gray1,
                                 fw: FontWeight.bold,
-                                color: blue1,
                               ),
-                            ],
-                          ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, bottom: 10),
+                              child: TextLines(
+                                title: "${posts.comments!.length} Comments",
+                                size: 14,
+                                color: gray1,
+                                fw: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                         Divider(
                           thickness: 2,

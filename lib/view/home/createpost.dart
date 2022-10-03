@@ -66,8 +66,7 @@ class Createpost extends StatelessWidget {
                               resourceType: CloudinaryResourceType.Image));
                       await CreatePostService.createPost(
                           title: _title.text, avathar: response.secureUrl);
-
-                      Get.offAll(const TabView());
+                      Get.offAll( TabView());
                     } catch (e) {
                       (e);
                     }

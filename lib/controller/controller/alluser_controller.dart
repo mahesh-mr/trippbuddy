@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/controller/userprofile_controller.dart';
 import 'package:trippbuddy/controller/service/follo_service.dart';
+import 'package:trippbuddy/controller/service/search_chat_service.dart';
 import 'package:trippbuddy/controller/service/serch_user_service.dart';
 import 'package:trippbuddy/model/allbuddys.dart';
 import 'package:trippbuddy/model/follow.dart';
+import 'package:trippbuddy/model/personal_post_model.dart';
 import 'package:trippbuddy/model/search_user.dart';
 import 'package:trippbuddy/controller/service/alluser_service.dart';
 
@@ -67,6 +70,27 @@ class AllUsercontroll extends GetxController {
       print(e);
     }
   }
+
+    Future<PersonalModel?> postPersonoalChat(String userId) async {
+      try {
+        var data = await SearchChatsService.postPersonal(userId: userId);
+        isLoding.value = false;
+        print("${data}============000");
+         return data;
+      } on DioError catch (e) {
+        print(e.response!.data);
+        print(e.error);
+        print(e.message);
+      } catch (e) {
+        Get.snackbar('oopz', ' $e');
+
+        print(e);
+
+        print('catch bloc called');
+
+        isLoding.value = false;
+      }
+    }
 
   Future<SearchUser?> postSearchUsers({required String qurey}) async {
     try {

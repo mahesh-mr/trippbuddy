@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final deletePostModel = deletePostModelFromJson(jsonString);
+//     final deletePost = deletePostFromJson(jsonString);
 
 import 'dart:convert';
 
-DeletePostModel deletePostModelFromJson(String str) => DeletePostModel.fromJson(json.decode(str));
+DeletePost deletePostFromJson(String str) => DeletePost.fromJson(json.decode(str));
 
-String deletePostModelToJson(DeletePostModel data) => json.encode(data.toJson());
+String deletePostToJson(DeletePost data) => json.encode(data.toJson());
 
-class DeletePostModel {
-    DeletePostModel({
+class DeletePost {
+    DeletePost({
         this.id,
         this.title,
         this.photo,
@@ -24,20 +24,20 @@ class DeletePostModel {
     String? id;
     String? title;
     String? photo;
-    List<dynamic>? likes;
+    List<String>? likes;
     PostedBy? postedBy;
-    List<dynamic>? comments;
+    List<Comment>? comments;
     DateTime? createdAt;
     DateTime? updatedAt;
     int ?v;
 
-    factory DeletePostModel.fromJson(Map<String, dynamic> json) => DeletePostModel(
+    factory DeletePost.fromJson(Map<String, dynamic> json) => DeletePost(
         id: json["_id"],
         title: json["title"],
         photo: json["photo"],
-        likes: List<dynamic>.from(json["likes"].map((x) => x)),
+        likes: List<String>.from(json["likes"].map((x) => x)),
         postedBy: PostedBy.fromJson(json["postedBy"]),
-        comments: List<dynamic>.from(json["comments"].map((x) => x)),
+        comments: List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x))),
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
         v: json["__v"],
@@ -49,10 +49,30 @@ class DeletePostModel {
         "photo": photo,
         "likes": List<dynamic>.from(likes!.map((x) => x)),
         "postedBy": postedBy!.toJson(),
-        "comments": List<dynamic>.from(comments!.map((x) => x)),
+        "comments": List<dynamic>.from(comments!.map((x) => x.toJson())),
         "createdAt": createdAt!.toIso8601String(),
         "updatedAt": updatedAt!.toIso8601String(),
         "__v": v,
+    };
+}
+
+class Comment {
+    Comment({
+        this.postedBy,
+        this.id,
+    });
+
+    String? postedBy;
+    String? id;
+
+    factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+        postedBy: json["postedBy"],
+        id: json["_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "postedBy": postedBy,
+        "_id": id,
     };
 }
 

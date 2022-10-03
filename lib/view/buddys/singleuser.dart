@@ -1,6 +1,4 @@
 // ignore_for_file: unrelated_type_equality_checks
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/controller/alluser_controller.dart';
@@ -10,7 +8,6 @@ import 'package:trippbuddy/model/allbuddys.dart';
 import 'package:trippbuddy/model/userpost.dart';
 import 'package:trippbuddy/view/core/color/colors.dart';
 import 'package:trippbuddy/view/core/font/font.dart';
-import 'package:trippbuddy/view/home/cmt.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 // ignore: must_be_immutable
@@ -82,8 +79,6 @@ class FriendProfile extends StatelessWidget {
                                           primary: controller.followed
                                               ? green2
                                               : red1),
-
-                                      // style: ButtonStyle(shape: OutlinedBorder(side: )),
                                       onPressed: () {
                                         if (controller.followed) {
                                           print("{followed}=======after");

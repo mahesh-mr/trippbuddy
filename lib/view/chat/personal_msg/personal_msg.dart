@@ -6,7 +6,6 @@ import 'package:trippbuddy/controller/service/Token/token.dart';
 import 'package:trippbuddy/controller/service/postchat_service.dart';
 import 'package:trippbuddy/model/personalchat.dart';
 import 'package:trippbuddy/model/recentchat.dart';
-import 'package:trippbuddy/view/core/color/colors.dart';
 
 
 class PeronalChats extends StatelessWidget {
@@ -18,7 +17,7 @@ class PeronalChats extends StatelessWidget {
   final _fomkey = GlobalKey<FormState>();
 
 
-  var msgs = false.obs;
+  //var msgs = false.obs;
   @override
   Widget build(BuildContext context) {
     PersonalChatController personalChatController =
@@ -28,7 +27,7 @@ class PeronalChats extends StatelessWidget {
     RecentChatController recentChatController = Get.put(RecentChatController());
 
     personalChatController.onInit();
-    final listChat = recentChatController.allRecentChats![chatindex];
+    final listChat = recentChatController.allRecentChats.value[chatindex];
 
     String userPic = listChat.users[0].id != userId
         ? listChat.users[0].pic

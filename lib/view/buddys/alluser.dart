@@ -104,6 +104,7 @@ class FrendsList extends StatelessWidget {
 
                             return InkWell(
                               onTap: () {
+                                print("62fd153b5d5abf8afde619c0====================mahesh mr");
                                 bool followed = userDetails.followers!
                                     .any((element) => element.sId == userId);
 

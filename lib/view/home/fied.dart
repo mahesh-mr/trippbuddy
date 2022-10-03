@@ -63,25 +63,20 @@ class NewFeid extends StatelessWidget {
                   print("${posts.likes!}=====================");
                   print("${userId}--------------");
                   print("${isLiked}========909090");
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: double.infinity,
-                      color: white1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                  return Container(
+                    width: double.infinity,
+                    color: white1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10,top: 10),
+                          child: Row(
                             children: [
-                              GestureDetector(
-                                onTap: (){
-                                  posts.postedBy!.sId==userId? Get.to(TabView()):null;
-                                },
-                                child: CircleAvatar(
-                                  radius: width * .07,
-                                  backgroundImage:
-                                      NetworkImage(posts.postedBy!.pic!),
-                                ),
+                              CircleAvatar(
+                                radius: width * .04,
+                                backgroundImage:
+                                    NetworkImage(posts.postedBy!.pic!),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(left: width * .03),
@@ -90,89 +85,94 @@ class NewFeid extends StatelessWidget {
                                   children: [
                                     TextLines(
                                         title: posts.postedBy!.name!,
-                                        size: width * .045),
+                                        size: width * .04,fw: FontWeight.bold,),
                                     //   SizedBox(height: height * .006),
                                   ],
                                 ),
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: height * .006,
+                        ),
+                        SizedBox(
+                          height: height * .006,
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: height * .35,
+                          child: Image.network(
+                            posts.photo!,
+                            fit: BoxFit.cover,
                           ),
-                          SizedBox(
-                            width: double.infinity,
-                            height: height * .3,
-                            child: Image.network(
-                              posts.photo!,
-                              fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          height: height * .006,
+                        ),
+                         Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                if (isLiked) {
+                                  postController.putUnlikes(
+                                    postId: posts.sId!,
+                                  );
+                                } else {
+                                  postController.putLikes(
+                                    postId: posts.sId!,
+                                  );
+                                }
+                              },
+                              icon: Icon(
+                                isLiked
+                                    ? Icons.favorite
+                                    : CupertinoIcons.heart,
+                                size: 30,
+                                color: isLiked ? red1 : blue1,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: height * .006,
-                          ),
-                          SizedBox(
-                            height: height * .006,
-                          ),
-                          TextLines(
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(
+                                  MyComments(cindex: index),
+                                );
+                              },
+                              child: const Icon(
+                                CupertinoIcons.chat_bubble,
+                                size: 30,
+                                color: blue1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: TextLines(
                             title: posts.title!,
                             size: width * .04,
-                            color: gray1,
+                            color: black1,fw: FontWeight.bold,
                           ),
-                          SizedBox(
-                            height: height * .006,
-                          ),
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  if (isLiked) {
-                                    postController.putUnlikes(
-                                      postId: posts.sId!,
-                                    );
-                                  } else {
-                                    postController.putLikes(
-                                      postId: posts.sId!,
-                                    );
-                                  }
-                                },
-                                icon: Icon(
-                                  isLiked
-                                      ? Icons.favorite
-                                      : CupertinoIcons.heart,
-                                  size: 30,
-                                  color: isLiked ? red1 : blue1,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.to(
-                                    MyComments(cindex: index),
-                                  );
-                                },
-                                child: const Icon(
-                                  CupertinoIcons.chat_bubble,
-                                  size: 30,
-                                  color: blue1,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
+                        ),
+                        SizedBox(
+                          height: height * .006,
+                        ),
+                       
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextLines(
                                   title: "${posts.likes!.length} Likes",
-                                  size: 18,
-                                  fw: FontWeight.bold),
+                                  size: 14,
+                                 color: gray1,fw: FontWeight.bold,),
 
                               TextLines(
                                   title: "${posts.comments!.length} Comments",
-                                  size: 18,
-                                  fw: FontWeight.bold),
+                                  size: 14,color: gray1,fw: FontWeight.bold,
+                                  ),
 
                               const SizedBox(
                                 height: 5,
@@ -180,8 +180,8 @@ class NewFeid extends StatelessWidget {
                               // Text(dd.toString())
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                 }),

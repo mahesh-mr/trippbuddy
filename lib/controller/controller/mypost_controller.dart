@@ -28,7 +28,7 @@ class MyPostController extends GetxController {
       print('catch bloc called');
 
       loding.value = false;
-    }
+    } 
   }
 
   Future<Like?> putLikes({required String postId}) async {
@@ -70,13 +70,7 @@ class MyPostController extends GetxController {
     }
   }
 
-  @override
-  void onInit() {
-    print("init state called");
-    getallMyPosts().then((value) => allMyPosts.value = value!);
-    super.onInit();
-  }
- Future<DeletePostModel?>deletePost({required String postId})async{
+  Future<DeletePost?>deletePost({required String postId})async{
   try {
     await CreatePostService.deletePost(postId:postId );
     print("delete controll");
@@ -84,6 +78,17 @@ class MyPostController extends GetxController {
       Get.snackbar("sorry", "$e");
     }
   }
+
+
+
+
+  @override
+  void onInit() {
+    print("init state called");
+    getallMyPosts().then((value) => allMyPosts.value = value!);
+    super.onInit();
+  }
+ 
 
 
  

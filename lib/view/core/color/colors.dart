@@ -12,7 +12,7 @@ const blue2 =Color.fromARGB(255, 84, 142, 250);
 const black1 = Colors.black;
 
 const red1 = Colors.red;
-const gray1 = Color.fromARGB(137, 53, 53, 53);
+const gray1 = Color.fromARGB(135, 20, 19, 19);
 const gray2 = Color.fromARGB(136, 120, 120, 122);
 
 

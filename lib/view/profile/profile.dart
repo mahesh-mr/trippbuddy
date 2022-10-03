@@ -27,7 +27,7 @@ class Profile extends StatelessWidget {
     MyPostController myPostController = Get.put(MyPostController());
     MyProfileController myrofileciontroller = Get.put(MyProfileController());
     myrofileciontroller.onInit();
-
+    Get.put(MyPostController());
     return Scaffold(
       body: DefaultTabController(
         length: 3,
@@ -75,123 +75,40 @@ class Profile extends StatelessWidget {
                                               leading: Icon(Icons.edit),
                                               title: Text("Edit Profile"),
                                             ),
-                                            // ListTile(
-                                            //   onTap: () {
-                                            //     showDialog(
-                                            //       context: context,
-                                            //       builder: (context) {
-                                            //         return AlertDialog(
-                                            //           shape:
-                                            //               RoundedRectangleBorder(
-                                            //                   borderRadius:
-                                            //                       BorderRadius
-                                            //                           .circular(
-                                            //                               10)),
-                                            //           //   backgroundColor: themeColor,
-                                            //           content: SizedBox(
-                                            //             height: 280,
-                                            //             child: Form(
-                                            //               key: formKey,
-                                            //               child:
-                                            //                   SingleChildScrollView(
-                                            //                 child: Column(
-                                            //                   children: [
-                                            //                     Text(
-                                            //                       'Reset Your Password',
-                                            //                       style: TextStyle(
-                                            //                           fontWeight:
-                                            //                               FontWeight
-                                            //                                   .w600,
-                                            //                           color:
-                                            //                               black1,
-                                            //                           fontSize:
-                                            //                               20),
-                                            //                     ),
-                                            //                     //  sizedBox10,
-                                            //                     TextFormPage(
-                                            //                         title:
-                                            //                             'Password',
-                                            //                         controller:
-                                            //                             _passwordController,
-                                            //                         obscuretext:
-                                            //                             true,
-                                            //                         validator:
-                                            //                             (value) {
-                                            //                           if (value!
-                                            //                               .isEmpty) {
-                                            //                             return 'Please enter password';
-                                            //                           } else if (value
-                                            //                                   .length <
-                                            //                               6) {
-                                            //                             return 'please enter atleast 6 digit password';
-                                            //                           }
-
-                                            //                           return null;
-                                            //                         }),
-                                            //                     TextFormPage(
-                                            //                       title:
-                                            //                           'Confirm Password',
-                                            //                       controller:
-                                            //                           confirmPasswordController,
-                                            //                       obscuretext:
-                                            //                           true,
-                                            //                       validator:
-                                            //                           (value) {
-                                            //                         if (value!
-                                            //                             .isEmpty) {
-                                            //                           return 'Please confirm password';
-                                            //                         }
-                                            //                         return null;
-                                            //                       },
-                                            //                     ),
-
-                                            //                     ElevatedButton(
-                                            //                         // style: elvButtonStyleWhite,
-                                            //                         onPressed:
-                                            //                             () {
-                                            //                           bool?
-                                            //                               isValid =
-                                            //                               formKey
-                                            //                                   .currentState!
-                                            //                                   .validate();
-                                            //                           print(
-                                            //                               isValid);
-
-                                            //                           if (isValid) {
-                                            //                             final SignUser
-                                            //                                 signUp =
-                                            //                                 SignUser(password: _passwordController.text);
-
-                                            //                             signUpController.resetPassword(
-                                            //                                 oldPassword:
-                                            //                                     _passwordController.text,
-                                            //                                 newPassword: confirmPasswordController.text,
-                                            //                                 userId: userid!);
-                                            //                           }
-                                            //                         },
-                                            //                         child:
-                                            //                             const Text(
-                                            //                           'Reset',
-                                            //                           style: TextStyle(
-                                            //                               color:
-                                            //                                   Colors.black),
-                                            //                         ))
-                                            //                   ],
-                                            //                 ),
-                                            //               ),
-                                            //             ),
-                                            //           ),
-                                            //         );
-                                            //       },
-                                            //     );
-                                            //   },
-                                            //   leading: Icon(Icons.lock),
-                                            //   title: Text("Edit Password"),
-                                            // ),
                                             ListTile(
                                               onTap: () {
-                                                TokenStorage.removed("token");
-                                                Get.to(LogIn());
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      title: Text(
+                                                          "Log out of Tripbuddy?"),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text("Cancel"),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            TokenStorage
+                                                                .removed(
+                                                                    "token");
+                                                            Get.to(LogIn());
+                                                          },
+                                                          child: Text(
+                                                            "Logout",
+                                                            style: TextStyle(
+                                                              color: red1,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
                                               },
                                               leading: Icon(Icons.logout),
                                               title: Text("LogOut"),
@@ -484,8 +401,8 @@ class Profile extends StatelessWidget {
               itemCount: myPostController.allMyPosts.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  childAspectRatio: 2 / 2,
-                  mainAxisExtent: 100,
+                  childAspectRatio: 2 / 2.5,
+                //  mainAxisExtent: 100,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5),
               itemBuilder: (context, index) {
