@@ -10,7 +10,6 @@ import 'package:trippbuddy/view/widgets/text.dart';
 class MyComments extends StatelessWidget {
   MyComments({Key? key, required this.cindex}) : super(key: key);
   int cindex;
-
   PostController postController = Get.put(PostController());
   String? userid = TokenStorage.getUserIdAndToken('uId');
 
@@ -20,7 +19,7 @@ class MyComments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-     final height = size.height;
+    final height = size.height;
     final width = size.width;
     final posts = postController.allPosts[cindex];
     return Scaffold(

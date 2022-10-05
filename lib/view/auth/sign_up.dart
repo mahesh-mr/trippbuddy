@@ -17,7 +17,6 @@ import 'package:trippbuddy/view/widgets/text.dart';
 class SignUp extends StatelessWidget {
   SignUp({Key? key}) : super(key: key);
 
-
   final _formkey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -69,42 +68,6 @@ class SignUp extends StatelessWidget {
                           passwerdFelid(),
                           SizedBox(
                             height: height * .02,
-                          ),
-                          LogButton(
-                            onpressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      'Select Choice',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    actions: [
-                                      IconButton(
-                                          onPressed: () {
-                                            controller
-                                                .picImage(ImageSource.camera);
-                                          },
-                                          icon: const Icon(Icons.camera)),
-                                      const Spacer(),
-                                      IconButton(
-                                          onPressed: () {
-                                            controller
-                                                .picImage(ImageSource.gallery);
-                                          },
-                                          icon: const Icon(Icons.photo)),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            text_or_icon: TextLines(
-                                title: "Select Image",
-                                size: width * .06,
-                                fontfamly: logbtn),
-                            edgeInsets: const EdgeInsets.only(left: 0),
-                            size: Size(double.infinity, height * .06),
                           ),
                           SizedBox(
                             height: height * .01,
@@ -183,16 +146,44 @@ class SignUp extends StatelessWidget {
                   ),
                 ),
               )
-            : const CircleAvatar(
-                radius: 55,
-                backgroundColor: gray2,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: white1,
-                  child: Icon(
-                    Icons.person,
-                    size: 65,
-                    color: gray2,
+            : GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text(
+                          'Select Choice',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        actions: [
+                          IconButton(
+                              onPressed: () {
+                                controller.picImage(ImageSource.camera);
+                              },
+                              icon: const Icon(Icons.camera)),
+                          const Spacer(),
+                          IconButton(
+                              onPressed: () {
+                                controller.picImage(ImageSource.gallery);
+                              },
+                              icon: const Icon(Icons.photo)),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: const CircleAvatar(
+                  radius: 55,
+                  backgroundColor: gray2,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: white1,
+                    child: Icon(
+                      Icons.person,
+                      size: 65,
+                      color: gray2,
+                    ),
                   ),
                 ),
               ),

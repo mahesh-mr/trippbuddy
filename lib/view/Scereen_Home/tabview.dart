@@ -13,92 +13,76 @@ import 'package:trippbuddy/view/profile/profile.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
 class TabView extends StatelessWidget {
-   TabView({Key? key,}) : super(key: key);
-   MyProfileController myrofileciontroller = Get.put(MyProfileController());
+  TabView({
+    Key? key,
+  }) : super(key: key);
+  MyProfileController myrofileciontroller = Get.put(MyProfileController());
 
   @override
   Widget build(BuildContext context) {
-    
     final size = MediaQuery.of(context).size;
     // final height = size.height;
     final width = size.width;
-    return  DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          backgroundColor: white1,
-          appBar: AppBar(
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 20,top: 15),
-                child: IconButton(onPressed: (){
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        backgroundColor: white1,
+        appBar: AppBar(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20, top: 15),
+              child: IconButton(
+                onPressed: () {
                   Get.to(ChatScreen());
-                }, icon: Icon(
-                      CupertinoIcons.ellipses_bubble_fill,color: blue1,
-                    ),),
-              )
-            ],
-            centerTitle: true,
-            title: TextLines(
-              title: "Tripbuddy",
-              size: width * .09,
-              fontfamly: head,
-              fw: FontWeight.bold,
-              color: black1,
-            ),
-            elevation: 0,
-            backgroundColor: white1,
-            bottom:  TabBar(
-              labelColor: blue1,
-              unselectedLabelColor: blue2,
-              tabs: [
-                Tab(
-                  icon: Icon(
-                    CupertinoIcons.house_fill,
-                  ),
+                },
+                icon: Icon(
+                  CupertinoIcons.ellipses_bubble_fill,
+                  color: blue1,
                 ),
-                // Tab(
-                //   icon: Icon(
-                //     CupertinoIcons.ellipses_bubble_fill,
-                //   ),
-                // ),
-                Tab(
-                  icon: Icon(CupertinoIcons.person_2_fill),
-                ),
-                Tab(
-                  icon: Icon(CupertinoIcons.shopping_cart),
-                ),
-             Obx(() {
-
-                    // Myprofile? mprofile2 = myrofileciontroller.profile.value;
-
-                    if (myrofileciontroller.profile.value?.userData == null) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-  Myprofile? mprofile = myrofileciontroller.profile.value;
-                    return Tab(
-                    
-                      icon:CircleAvatar(backgroundImage: NetworkImage(mprofile!.userData!.pic!,),radius: 15,)
-                      
-                      
-                    );
-                  }
-                ),
-              ],
-            ),
+              ),
+            )
+          ],
+          centerTitle: true,
+          title: TextLines(
+            title: "Tripbuddy",
+            size: width * .09,
+            fontfamly: head,
+            fw: FontWeight.bold,
+            color: black1,
           ),
-          body: TabBarView(
-            children: [
-               NewFeid(),
-            //  ChatScreen(),
-              FrendsList(),
-              Markets(),
-              Profile(),
+          elevation: 0,
+          backgroundColor: white1,
+          bottom: TabBar(
+            labelColor: blue1,
+            unselectedLabelColor: blue2,
+            tabs: [
+              Tab(
+                icon: Icon(
+                  CupertinoIcons.house_fill,
+                ),
+              ),
+            
+              Tab(
+                icon: Icon(CupertinoIcons.person_2_fill),
+              ),
+              Tab(
+                icon: Icon(CupertinoIcons.shopping_cart),
+              ),
+              Tab(icon: Icon(CupertinoIcons.person_alt_circle)),
+            
             ],
           ),
         ),
-      );
-    
+        body: TabBarView(
+          children: [
+            NewFeid(),
+            //  ChatScreen(),
+            FrendsList(),
+            Markets(),
+            Profile(),
+          ],
+        ),
+      ),
+    );
   }
 }
