@@ -18,15 +18,14 @@ class ViewPost extends StatelessWidget {
   ViewPost({Key? key, required this.mypostViewInx}) : super(key: key);
   int mypostViewInx;
 
-
   String? userId = TokenStorage.getUserIdAndToken("uId");
- 
+
   @override
   Widget build(BuildContext context) {
-     MyPostController myPostController = Get.put(MyPostController());
-     myPostController.onInit();
- 
-  PostController postController = Get.find<PostController>();
+    MyPostController myPostController = Get.put(MyPostController());
+    myPostController.onInit();
+
+    PostController postController = Get.find<PostController>();
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
@@ -115,10 +114,38 @@ class ViewPost extends StatelessWidget {
                                   const Spacer(),
                                   GestureDetector(
                                     onTap: () {
-                                      myPostController.deletePost(
-                                          postId: myPostController
-                                              .allMyPosts[index].sId!);
-                                      Navigator.pop(context);
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                "Do you want delete this Post?"),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("Cancel"),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  myPostController.deletePost(
+                                                      postId: myPostController
+                                                          .allMyPosts[index]
+                                                          .sId!);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "Delete",
+                                                  style: TextStyle(
+                                                    color: red1,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                     child: Icon(
                                       Icons.delete,
@@ -169,18 +196,18 @@ class ViewPost extends StatelessWidget {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(
-                                      MyComments(cindex: index),
-                                    );
-                                  },
-                                  child: const Icon(
-                                    CupertinoIcons.chat_bubble,
-                                    size: 30,
-                                    color: blue1,
-                                  ),
-                                ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     Get.to(
+                                //       MyComments(cindex: index),
+                                //     );
+                                //   },
+                                //   child: const Icon(
+                                //     CupertinoIcons.chat_bubble,
+                                //     size: 30,
+                                //     color: blue1,
+                                //   ),
+                                // ),
                               ],
                             ),
                             Padding(

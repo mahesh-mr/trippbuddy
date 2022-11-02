@@ -4,22 +4,22 @@
 
 import 'dart:convert';
 
-Singleuser singleuserFromJson(String str) => Singleuser.fromJson(json.decode(str));
+Singleusers singleuserFromJson(String str) => Singleusers.fromJson(json.decode(str));
 
-String singleuserToJson(Singleuser data) => json.encode(data.toJson());
+String singleuserToJson(Singleusers data) => json.encode(data.toJson());
 
-class Singleuser {
-    Singleuser({
+class Singleusers {
+    Singleusers({
         this.user,
         this.posts,
     });
 
     User? user;
-    List<Postd>? posts;
+    List<Postds>? posts;
 
-    factory Singleuser.fromJson(Map<String, dynamic> json) => Singleuser(
+    factory Singleusers.fromJson(Map<String, dynamic> json) => Singleusers(
         user: User.fromJson(json["user"]),
-        posts: List<Postd>.from(json["posts"].map((x) => Postd.fromJson(x))),
+        posts: List<Postds>.from(json["posts"].map((x) => Postds.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -28,8 +28,8 @@ class Singleuser {
     };
 }
 
-class Postd {
-    Postd({
+class Postds {
+    Postds({
         this.id,
         this.title,
         this.photo,
@@ -51,7 +51,7 @@ class Postd {
     DateTime ?updatedAt;
     int ?v;
 
-    factory Postd.fromJson(Map<String, dynamic> json) => Postd(
+    factory Postds.fromJson(Map<String, dynamic> json) => Postds(
         id: json["_id"],
         title: json["title"],
         photo: json["photo"],

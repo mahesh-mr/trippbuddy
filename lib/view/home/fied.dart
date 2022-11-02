@@ -7,7 +7,6 @@ import 'package:trippbuddy/controller/controller/allpost_controller.dart';
 import 'package:trippbuddy/controller/controller/mypost_controller.dart';
 import 'package:trippbuddy/model/post_model.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
-import 'package:trippbuddy/view/Scereen_Home/tabview.dart';
 import 'package:trippbuddy/view/core/color/colors.dart';
 import 'package:trippbuddy/view/home/createpost.dart';
 import 'package:trippbuddy/view/home/cmt.dart';
@@ -104,9 +103,9 @@ class NewFeid extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        SizedBox(
-                          height: height * .006,
-                        ),
+                        // SizedBox(
+                        //   height: height * .001,
+                        // ),
                          Row(
                           children: [
                             IconButton(

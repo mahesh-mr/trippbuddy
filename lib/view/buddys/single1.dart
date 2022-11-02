@@ -1,38 +1,28 @@
-// ignore_for_file: unrelated_type_equality_checks
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trippbuddy/controller/controller/alluser_controller.dart';
-import 'package:trippbuddy/controller/controller/userprofile_controller.dart';
 import 'package:trippbuddy/controller/service/Token/token.dart';
-import 'package:trippbuddy/model/allbuddys.dart';
+import 'package:trippbuddy/controller/service/userprofile_service.dart';
+import 'package:trippbuddy/model/1_singleuser1.dart';
+import 'package:trippbuddy/model/myprofile_modrl.dart';
+import 'package:trippbuddy/model/post_model.dart';
 import 'package:trippbuddy/model/userpost.dart';
-import 'package:trippbuddy/view/buddys/single1.dart';
 import 'package:trippbuddy/view/core/color/colors.dart';
 import 'package:trippbuddy/view/core/font/font.dart';
 import 'package:trippbuddy/view/widgets/text.dart';
 
-// ignore: must_be_immutable
-class FriendProfile extends StatelessWidget {
-  FriendProfile(
-      {Key? key,
-      required this.userDetails,
-      required this.id,
-      required this.followed})
+class Single12 extends StatelessWidget {
+  Single12({Key? key, required this.singleuser, required this.id})
       : super(key: key);
-  Users userDetails;
-  bool followed;
+
+  Singleuser singleuser;
   int id;
-  String? userId = TokenStorage.getUserIdAndToken("uId");
   @override
   Widget build(BuildContext context) {
-    UserPostcontroll userpostcontroller = Get.put(
-      UserPostcontroll(
-        followed: followed,
-        userId: userDetails.sId!,
-      ),
-    );
+    SingleUserCloneCont cloneCont = Get.put(
+        SingleUserCloneCont(userid: singleuser.user!.followers![id].id!));
+    //  AllUsercontroll allUsercontroll = Get.put(AllUsercontroll());
 
-    AllUsercontroll allUsercontroll = Get.put(AllUsercontroll());
     return Scaffold(
         backgroundColor: white1,
         body: DefaultTabController(
@@ -40,77 +30,72 @@ class FriendProfile extends StatelessWidget {
           child: NestedScrollView(
             headerSliverBuilder: (context, index) {
               return [
-                SliverToBoxAdapter(child: Obx(() {
-                  if (allUsercontroll.isLoding.value) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return SizedBox(
-                    height: 180,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, top: 40),
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                        userpostcontroller.singleuser.value!.user!.pic!   ,
-                            ),
-                            radius: 60,
-                          ),
+                SliverToBoxAdapter(
+                    child: SizedBox(
+                  height: 200,
+                  child: Row(children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, top: 40),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                       cloneCont. singleuser!.user!.pic!
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30, left: 10.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextLines(
-                                  title: userDetails.name!,
-                                  size: 20,
-                                  fontfamly: logbtn,
-                                  fw: FontWeight.w900),
-                              // SizedBox(height: 40,),
-                              Padding(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: GetBuilder<UserPostcontroll>(
-                                      builder: (controller) {
-                                    return ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: controller.followed
-                                              ? green2
-                                              : red1),
-                                      onPressed: () {
-                                        if (controller.followed) {
-                                          print("{followed}=======after");
-
-                                          allUsercontroll.putUnfollows(
-                                              unfollowId: userDetails.sId!);
-                                          print("unfollow");
-
-                                          print(
-                                              "${followed}=====follow/unfollow===============");
-                                        } else {
-                                          print("{followed}=======befor");
-                                          allUsercontroll.putFollows(
-                                              followId: userDetails.sId!);
-                                        }
-                                        controller.followAndUnfollow();
-
-                                        controller.getUsersposts();
-                                      },
-                                      child: Text(controller.followed
-                                          ? "unfollow"
-                                          : "follow"),
-                                    );
-                                  })),
-                            ],
-                          ),
-                        )
-                      ],
+                        radius: 60,
+                      ),
                     ),
-                  );
-                })),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30, left: 10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLines(
+                              title:cloneCont. singleuser!.user!.name!,
+                              size: 20,
+                              fontfamly: logbtn,
+                              fw: FontWeight.w900),
+                          // SizedBox(height: 40,),
+                          //       Padding(
+                          //           padding: const EdgeInsets.only(top: 20),
+                          //           child: GetBuilder<UserPostcontroll>(
+                          //               builder: (controller) {
+                          //             return ElevatedButton(
+                          //               style: ElevatedButton.styleFrom(
+                          //                   primary: controller.followed
+                          //                       ? green2
+                          //                       : red1),
+                          //               onPressed: () {
+                          //                 if (controller.followed) {
+                          //                   print("{followed}=======after");
+
+                          //                   allUsercontroll.putUnfollows(
+                          //                       unfollowId: userDetails.sId!);
+                          //                   print("unfollow");
+
+                          //                   print(
+                          //                       "${followed}=====follow/unfollow===============");
+                          //                 } else {
+                          //                   print("{followed}=======befor");
+                          //                   allUsercontroll.putFollows(
+                          //                       followId: userDetails.sId!);
+                          //                 }
+                          //                 controller.followAndUnfollow();
+
+                          //                 controller.getUsersposts();
+                          //               },
+                          //               child: Text(controller.followed
+                          //                   ? "unfollow"
+                          //                   : "follow"),
+                          //             );
+                          //           })),
+                          //     ],
+                          //   ),
+                          // )
+                        ],
+                      ),
+                    ),
+                  ]),
+                )),
                 SliverAppBar(
                   elevation: 0,
                   pinned: true,
@@ -123,27 +108,20 @@ class FriendProfile extends StatelessWidget {
                     labelColor: Colors.white,
                     unselectedLabelColor: Colors.black,
                     tabs: [
-                      Obx(() {
-                        if (userpostcontroller.isLoding.value) {
-                          return SizedBox();
-                        }
-                        return Tab(
-                            text: userpostcontroller
-                                .singleuser.value!.posts!.length
-                                .toString());
-                      }),
+                  
+                       Tab(
+                            text: cloneCont.singleuser!.posts!.length
+                                .toString()),
+                   
                       Tab(
-                        text: "${userDetails.following!.length} Following ",
+                        text:
+                            "${cloneCont.singleuser!.user!.following!.length} Following ",
                       ),
-                      Obx(() {
-                        if (userpostcontroller.isLoding.value) {
-                          return SizedBox();
-                        }
-
-                        return Tab(
+                 
+                        Tab(
                             text:
-                                "${userpostcontroller.singleuser.value!.user!.followers!.length} Followers");
-                      }),
+                                "${cloneCont.singleuser!.user!.followers!.length} Followers")
+                      
                     ],
                   ),
                 ),
@@ -152,15 +130,15 @@ class FriendProfile extends StatelessWidget {
             body: TabBarView(
               children: [
                 Obx(() {
-                  if (userpostcontroller.isLoding.value) {
+                  if (cloneCont.isLoding.value) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return AddFriendPosts();
+                  return AddFriendPosts(singleusers: singleuser, id: id);
                 }),
-                Following(userDetails: userDetails),
-                Follower(userDetails: userDetails),
+                Following(singleusers: singleuser, id: id),
+                Follower(singleusers: singleuser, id: id),
               ],
             ),
           ),
@@ -168,74 +146,24 @@ class FriendProfile extends StatelessWidget {
         // }),
         );
   }
-
-  // Obx userPic(AllUsercontroll allUsercontroll) {
-  //   return Obx(() {
-  //     if (allUsercontroll.isLoding.value) {
-  //       return const Center(
-  //         child: CircularProgressIndicator(),
-  //       );
-  //     }
-  //     return SizedBox(
-  //       height: 180,
-  //       child: Row(
-  //         children: [
-  //           Padding(
-  //             padding: const EdgeInsets.only(left: 10, top: 40),
-  //             child: CircleAvatar(
-  //               backgroundImage: NetworkImage(
-  //                 userDetails.pic!,
-  //               ),
-  //               radius: 60,
-  //             ),
-  //           ),
-  //           Padding(
-  //             padding: const EdgeInsets.only(top: 30, left: 10.0),
-  //             child: Column(
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 TextLines(
-  //                     title: userDetails.name!,
-  //                     size: 20,
-  //                     fontfamly: logbtn,
-  //                     fw: FontWeight.w900),
-
-  //                 // SizedBox(height: 40,),
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(top: 20),
-  //                   child: ElevatedButton(
-  //                     // style: ButtonStyle(shape: OutlinedBorder(side: )),
-  //                     onPressed: () {},
-  //                     child: const Text("unfollow"),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           )
-  //         ],
-  //       ),
-  //     );
-  //   });
-  // }
 }
 
 //followers=========================================================================
 class Follower extends StatelessWidget {
-  Follower({
-    Key? key,
-    required this.userDetails,
-  }) : super(key: key);
-  Users userDetails;
+  Follower({Key? key, required this.singleusers, required this.id})
+      : super(key: key);
+  Singleuser singleusers;
+  int id;
 
-  AllUsercontroll allUsercontroll = Get.put(AllUsercontroll());
-  UserPostcontroll userpostcontroll = Get.find<UserPostcontroll>();
+  // UserPostcontroll userpostcontroll = Get.find<UserPostcontroll>();
   String? userId = TokenStorage.getUserIdAndToken("uId");
   @override
   Widget build(BuildContext context) {
+    SingleUserCloneCont cloneCont = Get.find<SingleUserCloneCont>();
+    // AllUsercontroll allUsercontroll = Get.find<AllUsercontroll>();
     // List<Followers>?followers;
     return Obx(() {
-      if (userpostcontroll.isLoding.value) {
+      if (cloneCont.isLoding.value) {
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -244,25 +172,21 @@ class Follower extends StatelessWidget {
       return ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: userpostcontroll.singleuser.value!.user!.followers!.length,
-         
+          itemCount: cloneCont.singleuser!.user!.followers!.length,
           itemBuilder: (context, index) {
-            print(userpostcontroll.singleuser.value!.user!.followers!.length);
-            print(userpostcontroll.singleuser.value!.user!.following!.length);
+            print(cloneCont.singleuser!.user!.followers!.length);
+            print(cloneCont.singleuser!.user!.following!.length);
             return Padding(
               padding: const EdgeInsets.only(bottom: 5),
               child: ListTile(
-                onTap: (){
-                    print(userpostcontroll.singleuser.value!.user!.followers![index].id!);
-                   Get.to(
-                      Single12(singleuser: userpostcontroll.singleuser.value!, id: index));},
+                // onTap: ontap,
                 leading: SizedBox(
                   height: 70,
                   width: 70,
                   child: GestureDetector(
                     onTap: () {
                       print(
-                          "${userpostcontroll.singleuser.value!.user!.followers![index].id!}==========follow id");
+                          "${cloneCont.singleuser!.user!.followers![index].id!}==========follow id");
                       print("${userId}========myid");
                     },
                     child: ClipRRect(
@@ -270,7 +194,7 @@ class Follower extends StatelessWidget {
                         child: SizedBox.fromSize(
                           size: const Size.fromRadius(10),
                           child: Image.network(
-                              userpostcontroll.singleuser.value!.user!
+                              cloneCont.singleuser!.user!
                                   .followers![index].pic!,
                               fit: BoxFit.cover,
                               colorBlendMode: BlendMode.lighten),
@@ -278,8 +202,7 @@ class Follower extends StatelessWidget {
                   ),
                 ),
                 title: Text(
-                  userpostcontroll
-                      .singleuser.value!.user!.followers![index].name!,
+                  cloneCont.singleuser!.user!.followers![index].name!,
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -293,18 +216,18 @@ class Follower extends StatelessWidget {
 
 //following========================================================================================================
 class Following extends StatelessWidget {
-  Following({
-    Key? key,
-    required this.userDetails,
-  }) : super(key: key);
-  Users userDetails;
+  Following({Key? key, required this.singleusers, required this.id})
+      : super(key: key);
+  Singleuser singleusers;
+  int id;
   String? userId = TokenStorage.getUserIdAndToken("uId");
   @override
   Widget build(BuildContext context) {
-    UserPostcontroll userpostcontroll = Get.find<UserPostcontroll>();
-    // List<Followers>?followers;
+    SingleUserCloneCont cloneCont = Get.find<SingleUserCloneCont>();
+
+
     return Obx(() {
-      if (userpostcontroll.isLoding.value) {
+      if (cloneCont.isLoding.value) {
         return Center(
           child: CircularProgressIndicator(),
         );
@@ -313,15 +236,13 @@ class Following extends StatelessWidget {
       return ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: userpostcontroll.singleuser.value!.user!.following!.length,
+          itemCount: cloneCont.singleuser!.user!.following!.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 5),
               child: ListTile(
                 onTap: () {
-                 
-                  Get.to(
-                      Single12(singleuser: userpostcontroll.singleuser.value!, id: index));
+                  Get.to(Single12(singleuser: singleusers, id: id));
                 },
                 leading: SizedBox(
                   height: 70,
@@ -334,12 +255,12 @@ class Following extends StatelessWidget {
                           onTap: () {
                             print("62fdb37155f9231730d4e796");
                             print(
-                                "${userpostcontroll.singleuser.value!.user!.id!.toString()}=========usr id");
+                                "${cloneCont.singleuser!.user!.id!.toString()}=========usr id");
                             print(
-                                "${userpostcontroll.singleuser.value!.user!.followers![index].id!}==========follow idrr");
+                                "${cloneCont.singleuser!.user!.followers![index].id!}==========follow idrr");
                           },
                           child: Image.network(
-                              userpostcontroll.singleuser.value!.user!
+                              cloneCont.singleuser!.user!
                                   .following![index].pic!,
                               fit: BoxFit.cover,
                               colorBlendMode: BlendMode.lighten),
@@ -347,8 +268,7 @@ class Following extends StatelessWidget {
                       )),
                 ),
                 title: Text(
-                  userpostcontroll
-                      .singleuser.value!.user!.following![index].name!,
+                  cloneCont.singleuser!.user!.following![index].name!,
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -362,33 +282,35 @@ class Following extends StatelessWidget {
 //single frends post==========================================================================================================
 
 class AddFriendPosts extends StatelessWidget {
-  AddFriendPosts({Key? key}) : super(key: key);
-  UserPostcontroll userpostcontroller = Get.find<UserPostcontroll>();
-
+  AddFriendPosts({Key? key, required this.singleusers, required this.id})
+      : super(key: key);
+  Singleuser singleusers;
+  int id;
   String? userId = TokenStorage.getUserIdAndToken("uId");
 
   @override
   Widget build(BuildContext context) {
+    SingleUserCloneCont cloneCont = Get.find<SingleUserCloneCont>();
+    // AllUsercontroll allUsercontroll = Get.find<AllUsercontroll>();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Obx(() {
-          if (userpostcontroller.isLoding.value) {
+          if (cloneCont.isLoding.value) {
             const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (userpostcontroller.singleuser.value!.posts!.isEmpty) {
+          if (cloneCont.singleuser!.posts!.isEmpty) {
             const Center(
               child: const Text("data"),
             );
           }
           return ListView.builder(
               shrinkWrap: true,
-              itemCount: userpostcontroller.singleuser.value!.posts!.length,
+              itemCount: cloneCont.singleuser!.posts!.length,
               itemBuilder: (BuildContext context, index) {
-                Postd postd =
-                    userpostcontroller.singleuser.value!.posts![index];
+                Postds postd = cloneCont.singleuser!.posts![index];
                 bool isLikes = postd.likes!.any((element) => element == userId);
                 print("${isLikes}==------------===============------------");
                 print("${postd.likes}=========------============");
@@ -400,8 +322,7 @@ class AddFriendPosts extends StatelessWidget {
                       width: double.infinity,
                       height: 250,
                       child: Image.network(
-                        userpostcontroller
-                            .singleuser.value!.posts![index].photo!,
+                        cloneCont.singleuser!.posts![index].photo!,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -412,8 +333,8 @@ class AddFriendPosts extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextLines(
-                              title: userpostcontroller
-                                  .singleuser.value!.posts![index].title!,
+                              title: cloneCont
+                                  .singleuser!.posts![index].title!,
                               size: 18,
                               fontfamly: headline,
                               color: const Color.fromARGB(255, 104, 101, 101),
@@ -463,12 +384,12 @@ class AddFriendPosts extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${userpostcontroller.singleuser.value!.posts![index].likes!.length.toString()} likes",
+                                "${cloneCont.singleuser!.posts![index].likes!.length.toString()} likes",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               ),
                               Text(
-                                "${userpostcontroller.singleuser.value!.posts![index].comments!.length.toString()} comments",
+                                "${cloneCont.singleuser!.posts![index].comments!.length.toString()} comments",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15),
                               )

@@ -66,7 +66,11 @@ class Createpost extends StatelessWidget {
                               resourceType: CloudinaryResourceType.Image));
                       await CreatePostService.createPost(
                           title: _title.text, avathar: response.secureUrl);
+                           ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('Processing Data')));
                       Get.offAll( TabView());
+                           ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('Processing Data')));
                     } catch (e) {
                       (e);
                     }
